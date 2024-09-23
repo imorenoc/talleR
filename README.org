@@ -1,0 +1,37 @@
+#+Title: Taller de R
+#+author: Dr. Isaías Moreno Cruz
+
+- *Inicia*: 23 de septiembre
+- *Termina*: 16 de octubre
+- *Horario*: Lunes y Miércoles de 4:30-6:00
+
+Curso en linea, plataforma Windows/Linux/Mac
+
+* Taller de R
+
+=R= es un software de estadística y visualización para análisis de datos. El presente Taller tiene como objetivo conocer las generalidades básicas de =R=. En el curso aprenderas a instalar R, así las distintas interfases de usuario (GUI) disponibles, usar listas, manejar data frames, escribir y leer datos, gráficar, crear funciones y más. =R= es un software multiplataforma que puede ser instalado en Windows, Linux y Mac.
+
+* Temario
+
+1. Antecedentes
+2. Motivación
+3. Instalación
+4. Introducción a R
+   + Objetos, números, atributos
+   + Matrices
+   + Funciones cbind y rbind
+   + Listas, factores
+   + Valores perdidos
+   + Data Frame
+   + Remover valores NA
+5. Operaciones vectoriales
+6. Leer y escribir datos
+7. Estructuras de control
+8. Funciones
+9. Loop function
+10. Números aleatorios
+11. Gráficas (plot, lattice, ggplot2)
+12. Colores
+13. Fechas y horas
+14. Expresiones regulares
+15. Reproducibilidad

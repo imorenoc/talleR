@@ -1,5 +1,43 @@
 #+title: Taller de R. Clase 01
 #+author: Dr. Isaías Moreno Cruz
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+latex_header: \mode<beamer>{\usetheme{Madrid}}
+
+* Objetivo
+
+** Objetivo
+=R= es un software de estadística y visualización para análisis de datos. El presente Taller tiene como objetivo conocer las generalidades básicas de =R=. En el curso aprenderas a instalar R, así las distintas interfases de usuario (GUI) disponibles, usar listas, manejar data frames, escribir y leer datos, gráficar, crear funciones y más. =R= es un software multiplataforma que puede ser instalado en Windows, Linux y Mac.
+
+* Temario
+
+1. Antecedentes
+2. Motivación
+3. Instalación
+4. Introducción a R
+   + Objetos, números, atributos
+   + Matrices
+   + Funciones cbind y rbind
+   + Listas, factores
+   + Valores perdidos
+   + Data Frame
+   + Remover valores NA
+
+* Temario II
+
+5. Operaciones vectoriales
+6. Leer y escribir datos
+7. Estructuras de control
+8. Funciones
+9. Loop function
+10. Números aleatorios
+11. Gráficas (plot, lattice, ggplot2)
+12. Colores
+13. Fechas y horas
+14. Expresiones regulares
+15. Reproducibilidad
+
+
 
 * Introducción de R
 
@@ -12,12 +50,388 @@
 
 * Instalación
 
-- R base, se descarga de CRAN
+- [[https://cloud.r-project.org/][R base]], Instalación
 - Packages. lattice, ggplot2, dplyr, ...
-- Editores
-- R Studio
+- Editores: terminal, jupyther, [[https://posit.co/download/rstudio-desktop/][R Studio]], emacs.
 - Stack Overflow
 
 * Motivación
 
-[[file:practica.org]]
+** Ejemplo
+
+[[file:practica.org][motivación]]
+
+* Objetos
+
+Todo en R es un objeto. Tiene cinco clases  basicas de objetos:
+
+- character
+- numeric
+- integer
+- complex
+- logical(True/False)
+
+** R
+#+begin_src R :results value :exports both :session clase01
+  x <- 4.2
+  class(x)
+#+end_src
+
+#+RESULTS:
+: numeric
+
+ 
+* Numbers
+
+- Inf; e.g. 1/0
+- NaN; e.g. 0/0
+
+** R
+#+begin_src R :results output :exports both :session clase01
+  x <- 1/0
+  y <- 0/0
+  print(x)
+  print(y)
+#+end_src
+
+#+RESULTS:
+: [1] Inf
+: [1] NaN
+
+
+* Atributos
+
+Los objetos de R pueden tener los atributos:
+
+- names
+- dimensions
+- class
+- length
+
+* Comentario =#=
+
+El caracter =#= indica un comentario.
+
+** R
+
+#+begin_src R :results output :session clase01 :exports both
+  # Input
+  x <- 1
+  print(x)
+#+end_src
+
+#+RESULTS:
+: [1] 1
+
+El [1] indica que x es un vector y su primer elemento es 1.
+
+* Operador =:=
+
+Operador =:= usado para crear una secuencia
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  # Input
+  x <- 1:20
+  x
+#+end_src
+
+#+RESULTS:
+:  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+
+* Función =c()=
+
+La función =c()= puede usarse para crear vectores de objetos
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- c(0.5, 0.6)
+  x <- c(TRUE, FALSE)
+  x <- c(T, F)
+  x <- c("a", "b", "c")
+  x <- 9:29
+  x <- c(1+0i, 2+4i)
+#+end_src
+
+#+RESULTS:
+: [1] 1+0i 2+4i
+
+
+* Objetos mixtos
+
+** R
+
+#+begin_src R :results output :session clase01 :exports both
+  y <- c(1.7, "a")
+  class(y)
+  y
+#+end_src
+
+#+RESULTS:
+: [1] "character"
+: [1] "1.7" "a"
+
+* Coerción explicita. Funciones =as.*=
+
+Los objetos pueden ser forzados explicitamente a una clase usando la función =as.*=
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- 0:6
+  class(x)
+  as.numeric(x)
+  as.logical(x)
+  as.character(x)
+  as.complex(x)
+#+end_src
+
+#+RESULTS:
+: [1] "integer"
+: [1] 0 1 2 3 4 5 6
+: [1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+: [1] "0" "1" "2" "3" "4" "5" "6"
+: [1] 0+0i 1+0i 2+0i 3+0i 4+0i 5+0i 6+0i
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- c("a", "b", "c")
+  as.numeric(x)
+#+end_src
+
+#+RESULTS:
+: [1] NA NA NA
+: Warning message:
+: NAs introduced by coercion
+
+* Matrices
+
+Las matrices son vectores con un atributo de dimension. La dimensión es un vector entero con longitud 2 (nrow, ncol).
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  m <- matrix(nrow=2, ncol=3)
+  m
+  dim(m)
+  attributes(m)
+#+end_src
+
+#+RESULTS:
+:      [,1] [,2] [,3]
+: [1,]   NA   NA   NA
+: [2,]   NA   NA   NA
+: [1] 2 3
+: $dim
+: [1] 2 3
+
+* Matrices II
+
+Las matrices son construidas por columnas.
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  m <- matrix(1:6, nrow=2, ncol=3)
+  m
+#+end_src
+
+#+RESULTS:
+:      [,1] [,2] [,3]
+: [1,]    1    3    5
+: [2,]    2    4    6
+
+Las matrices pueden ser creadas a partir de un vector al agregar el atributo de dimension.
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  m <- 1:10
+  m
+  dim(m) <- c(2,5)
+  m
+#+end_src
+
+#+RESULTS:
+:  [1]  1  2  3  4  5  6  7  8  9 10
+:      [,1] [,2] [,3] [,4] [,5]
+: [1,]    1    3    5    7    9
+: [2,]    2    4    6    8   10
+
+
+* cbind-ing y rbind-ing
+
+Las matrices pueden ser creadas por column-dinding (unión de columnas) o row-binding con cbind() y rbind()
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- 1:3
+  y <- 10:12
+  cbind(x,y)
+  rbind(x,y)
+#+end_src
+
+#+RESULTS:
+:      x  y
+: [1,] 1 10
+: [2,] 2 11
+: [3,] 3 12
+:   [,1] [,2] [,3]
+: x    1    2    3
+: y   10   11   12
+
+* List
+
+La lista es un tipo especial de vector que puede contener elementos de diferente clase. Las listas son muy importantes en R.
+
+** R 
+#+begin_src R :results output :session clase01 :exports both
+  x <- list(1, "a", TRUE, 1+4i)
+  x
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[[1]]
+[1] 1
+
+[[2]]
+[1] "a"
+
+[[3]]
+[1] TRUE
+
+[[4]]
+[1] 1+4i
+#+end_example
+
+* Factors
+
+Los factores son usados para representar una categoria.
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- factor(c("yes", "yes", "no", "yes", "no"))
+  x
+  table(x)
+  unclass(x)
+#+end_src
+
+#+RESULTS:
+: [1] yes yes no  yes no 
+: Levels: no yes
+: x
+:  no yes 
+:   2   3
+: [1] 2 2 1 2 1
+: attr(,"levels")
+: [1] "no"  "yes"
+
+El orden  de los niveles pueden ser fijados utilizando el argumento =levels= en la función factor(). Esto puede ser importante en modelos lineales porque el primer nivel es usado como linea base.
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+    x <- factor(c("yes", "yes", "no", "yes", "no"),
+		levels=c("yes", "no"))
+    x
+#+end_src
+
+#+RESULTS:
+: [1] yes yes no  yes no 
+: Levels: yes no
+
+* Missing Values
+
+Los valores perdidos son denotados por NA o NaN para definir una operación matemática indefinida.
+
+- is.na() usado para probar si hay Na en un objeto
+- is.nan() usado para probar si hay NaN en un objeto
+- El valor de NA tienen clase.
+- El valor de NaN es también NA, pero no viceversa. 
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- c(1, 2, NA, 10, 3)
+  is.na(x)
+  is.nan(x)
+#+end_src
+
+#+RESULTS:
+: [1] FALSE FALSE  TRUE FALSE FALSE
+: [1] FALSE FALSE FALSE FALSE FALSE
+
+* Data Frame
+
+Data frames son usados para almacenar datos de manera tabular
+
+- Son representados como un tipo de lista especial donde cada elemento de la lista tiene la misma longitud
+- A diferencia de las matrices, los datas frame pueden almacenar diferentes tipos de clases en cada columna
+- Data frames tienen un atributo especial llamado =row.names=
+- Data frame son usualmente creados usando =read.table()= o =read.csv()=
+- Pueden ser convertidos a una matriz al usar =data.matrix()=
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- data.frame(foo=1:4, bar=c(T, T, F, F))
+  x
+  nrow(x)
+  ncol(x)
+#+end_src
+
+#+RESULTS:
+:   foo   bar
+: 1   1  TRUE
+: 2   2  TRUE
+: 3   3 FALSE
+: 4   4 FALSE
+: [1] 4
+: [1] 2
+
+* Names
+
+Los objetos de R pueden tener names, lo que es muy útil para escribir código leíble y auto-descriptible
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  x <- 1:3
+  names(x)
+  names(x) <- c("foo", "bar", "north")
+  x
+  names(x)
+#+end_src
+
+#+RESULTS:
+: NULL
+:   foo   bar north 
+:     1     2     3
+: [1] "foo"   "bar"   "north"
+
+Las listas puden tener nombres
+
+** R 
+#+begin_src R :results output :session clase01 :exports both
+  x <- list(a=1, b=2, c=3)
+  x
+#+end_src
+
+#+RESULTS:
+: $a
+: [1] 1
+: 
+: $b
+: [1] 2
+: 
+: $c
+: [1] 3
+
+* Names II
+
+Las matrices también pueden tener nombres
+
+** R
+#+begin_src R :results output :session clase01 :exports both
+  m <- matrix(1:4, nrow=2, ncol=2)
+  dimnames(m) <- list(c("a", "b"), c("c", "d"))
+  m
+#+end_src
+
+#+RESULTS:
+:   c d
+: a 1 3
+: b 2 4

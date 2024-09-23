@@ -8,7 +8,8 @@
 #+end_src
 
 #+RESULTS:
-: [1] "/media/moreno/Documents/clases/TalleR/clase_01"
+: [1] "/media/moreno/Documents/clases/talleR"
+
 
 
 
@@ -21,12 +22,12 @@
 : [1] "/media/moreno/Downloads"
 
 #+begin_src R :results output :session practica01 
-  setwd("/media/moreno/Documents/notas/R/practicas")
+  setwd("/home/isaias/Documents/clases/talleR/clase_01/")
   getwd()
 #+end_src
 
 #+RESULTS:
-: [1] "/media/moreno/Documents/notas/R/practicas"
+: [1] "/media/moreno/Documents/clases/talleR/clase_01"
 
 * Leer archivo
 
@@ -134,24 +135,25 @@ sapply(df, sd, na.rm=TRUE)
 
 ** pairs
 
-#+begin_src R :file ./figp1/pairs.png :results file graphics :session practica01
+#+begin_src R :file ./fig/pairs.png :results file graphics :session practica01
 pairs(df)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/pairs.png]]
+[[file:./fig/pairs.png]]
 
-#+begin_src R :file ./figp1/pairsCol.png :results file graphics :session practica01
+
+#+begin_src R :file ./fig/pairsCol.png :results file graphics :session practica01
 pairs(Day~., df, col=df$Day)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/pairsCol.png]]
+[[file:./fig/pairsCol.png]]
+
 
 ** cor
 
-
-#+begin_src R :file ./figp1/cor.png :results file graphics :session practica01
+#+begin_src R :file ./fig/cor.png :results file graphics :session practica01
   library(corrplot)
   good <- complete.cases(df)
   correlations <- cor(df[good,])
@@ -159,12 +161,12 @@ pairs(Day~., df, col=df$Day)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/cor.png]]
+[[file:./fig/cor.png]]
 
 
 ** Histogramas
 
-#+begin_src R :file ./figp1/hist.png :results file graphics :session practica01
+#+begin_src R :file ./fig/hist.png :results file graphics :session practica01
   par(mfrow = c(1,4))
     for(i in 1:4){
       hist(df[,i], main=names(df)[i])
@@ -172,11 +174,12 @@ pairs(Day~., df, col=df$Day)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/hist.png]]
+[[file:./fig/hist.png]]
+
 
 ** Densidad
 
-#+begin_src R :file ./figp1/density.png :results file graphics :session practica01
+#+begin_src R :file ./fig/density.png :results file graphics :session practica01
   library(lattice)
   par(mfrow = c(1,4))
   for(i in 1:4){
@@ -185,12 +188,13 @@ pairs(Day~., df, col=df$Day)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/density.png]]
+[[file:./fig/density.png]]
+
 
 
 ** Bigotes
 
-#+begin_src R :file ./figp1/boxplot.png :results file graphics :session practica01
+#+begin_src R :file ./fig/boxplot.png :results file graphics :session practica01
   par(mfrow=c(1,4))
   for(i in 1:4){
     boxplot(df[,i], main=names(df)[i])
@@ -198,13 +202,16 @@ pairs(Day~., df, col=df$Day)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/boxplot.png]]
+[[file:./fig/boxplot.png]]
+
+
 ** Valores pérdidos
 
-#+begin_src R :file ./figp1/missmap.png :results file graphics :session practica01
+#+begin_src R :file ./fig/missmap.png :results file graphics :session practica01
   library(Amelia)
   missmap(df)
 #+end_src
 
 #+RESULTS:
-[[file:./figp1/missmap.png]]
+[[file:./fig/missmap.png]]
+
