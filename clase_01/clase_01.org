@@ -1,0 +1,23 @@
+#+title: Taller de R. Clase 01
+#+author: Dr. Isaías Moreno Cruz
+
+* Introducción de R
+
+ - 1976: S es un lenguaje desarrollado  por John Chambers y otros en Bell Labs.
+ - 1991: R creado en Nueva Zelanda por Ross Ihaka y Robert Gentleman
+ - 1995: Martin Mächler convence a Ross y Robert de usar la licencia GNU General Public para hacer R software libre
+ - 1997: El R Core Group se forma, [[https://www.r-project.org/][R Core]].
+ - 2000: La versión 1.0.0 es R liberado
+
+
+* Instalación
+
+- R base, se descarga de CRAN
+- Packages. lattice, ggplot2, dplyr, ...
+- Editores
+- R Studio
+- Stack Overflow
+
+* Motivación
+
+[[file:practica.org]]

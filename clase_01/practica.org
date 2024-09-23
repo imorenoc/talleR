@@ -1,0 +1,210 @@
+#+title: Practica 01
+
+
+* Directorio de trabajo
+
+#+begin_src R :results output :session practica01 
+  getwd()
+#+end_src
+
+#+RESULTS:
+: [1] "/media/moreno/Documents/clases/TalleR/clase_01"
+
+
+
+#+begin_src R :results output :session practica01 
+  setwd("~/Downloads")
+  getwd()
+#+end_src
+
+#+RESULTS:
+: [1] "/media/moreno/Downloads"
+
+#+begin_src R :results output :session practica01 
+  setwd("/media/moreno/Documents/notas/R/practicas")
+  getwd()
+#+end_src
+
+#+RESULTS:
+: [1] "/media/moreno/Documents/notas/R/practicas"
+
+* Leer archivo
+
+#+begin_src R :results output :session practica01 
+  file <- "./data/hw1_data.csv"
+  df <- read.table(file, sep=',', header=TRUE)
+#+end_src
+
+#+RESULTS:
+
+** head
+
+#+begin_src R :results output :session practica01 
+  head(df)
+#+end_src
+
+#+RESULTS:
+:   Ozone Solar.R Wind Temp Month Day
+: 1    41     190  7.4   67     5   1
+: 2    36     118  8.0   72     5   2
+: 3    12     149 12.6   74     5   3
+: 4    18     313 11.5   62     5   4
+: 5    NA      NA 14.3   56     5   5
+: 6    28      NA 14.9   66     5   6
+
+
+#+begin_src R :results none :session practica01 
+View(df)
+#+end_src
+
+
+** Dimensión de los datos
+
+#+begin_src R :results output :session practica01 
+  dim(df)
+#+end_src
+
+#+RESULTS:
+: [1] 153   6
+
+** Tipo de atributos
+
+#+begin_src R :results output :session practica01 
+  sapply(df, class)
+#+end_src
+
+#+RESULTS:
+:     Ozone   Solar.R      Wind      Temp     Month       Day 
+: "integer" "integer" "numeric" "integer" "integer" "integer"
+
+
+** summary
+
+#+begin_src R :results output :session practica01 
+summary(df)
+#+end_src
+
+#+RESULTS:
+:      Ozone           Solar.R           Wind             Temp           Month            Day      
+:  Min.   :  1.00   Min.   :  7.0   Min.   : 1.700   Min.   :56.00   Min.   :5.000   Min.   : 1.0  
+:  1st Qu.: 18.00   1st Qu.:115.8   1st Qu.: 7.400   1st Qu.:72.00   1st Qu.:6.000   1st Qu.: 8.0  
+:  Median : 31.50   Median :205.0   Median : 9.700   Median :79.00   Median :7.000   Median :16.0  
+:  Mean   : 42.13   Mean   :185.9   Mean   : 9.958   Mean   :77.88   Mean   :6.993   Mean   :15.8  
+:  3rd Qu.: 63.25   3rd Qu.:258.8   3rd Qu.:11.500   3rd Qu.:85.00   3rd Qu.:8.000   3rd Qu.:23.0  
+:  Max.   :168.00   Max.   :334.0   Max.   :20.700   Max.   :97.00   Max.   :9.000   Max.   :31.0  
+:  NA's   :37       NA's   :7
+
+#+begin_src R :results output :session practica01 
+sapply(df, sd)
+#+end_src
+
+#+RESULTS:
+:    Ozone  Solar.R     Wind     Temp    Month      Day 
+:       NA       NA 3.523001 9.465270 1.416522 8.864520
+
+#+begin_src R :results output :session practica01 
+sapply(df, sd, na.rm=TRUE)
+#+end_src
+
+#+RESULTS:
+:     Ozone   Solar.R      Wind      Temp     Month       Day 
+: 32.987885 90.058422  3.523001  9.465270  1.416522  8.864520
+
+** correlaciones
+
+#+begin_src R :results output :session practica01 
+  #library(corrplot)
+  good <- complete.cases(df)
+  correlations <- cor(df[good,])
+  correlations
+#+end_src
+
+#+RESULTS:
+:                Ozone     Solar.R        Wind       Temp        Month          Day
+: Ozone    1.000000000  0.34834169 -0.61249658  0.6985414  0.142885168 -0.005189769
+: Solar.R  0.348341693  1.00000000 -0.12718345  0.2940876 -0.074066683 -0.057753801
+: Wind    -0.612496576 -0.12718345  1.00000000 -0.4971897 -0.194495804  0.049871017
+: Temp     0.698541410  0.29408764 -0.49718972  1.0000000  0.403971709 -0.096545800
+: Month    0.142885168 -0.07406668 -0.19449580  0.4039717  1.000000000 -0.009001079
+: Day     -0.005189769 -0.05775380  0.04987102 -0.0965458 -0.009001079  1.000000000
+
+
+
+* Gráficas
+
+** pairs
+
+#+begin_src R :file ./figp1/pairs.png :results file graphics :session practica01
+pairs(df)
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/pairs.png]]
+
+#+begin_src R :file ./figp1/pairsCol.png :results file graphics :session practica01
+pairs(Day~., df, col=df$Day)
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/pairsCol.png]]
+
+** cor
+
+
+#+begin_src R :file ./figp1/cor.png :results file graphics :session practica01
+  library(corrplot)
+  good <- complete.cases(df)
+  correlations <- cor(df[good,])
+  corrplot(correlations, method="circle")
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/cor.png]]
+
+
+** Histogramas
+
+#+begin_src R :file ./figp1/hist.png :results file graphics :session practica01
+  par(mfrow = c(1,4))
+    for(i in 1:4){
+      hist(df[,i], main=names(df)[i])
+      }
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/hist.png]]
+
+** Densidad
+
+#+begin_src R :file ./figp1/density.png :results file graphics :session practica01
+  library(lattice)
+  par(mfrow = c(1,4))
+  for(i in 1:4){
+      plot( density(df[good,i]), main=names(df)[i])
+      }
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/density.png]]
+
+
+** Bigotes
+
+#+begin_src R :file ./figp1/boxplot.png :results file graphics :session practica01
+  par(mfrow=c(1,4))
+  for(i in 1:4){
+    boxplot(df[,i], main=names(df)[i])
+    }
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/boxplot.png]]
+** Valores pérdidos
+
+#+begin_src R :file ./figp1/missmap.png :results file graphics :session practica01
+  library(Amelia)
+  missmap(df)
+#+end_src
+
+#+RESULTS:
+[[file:./figp1/missmap.png]]
