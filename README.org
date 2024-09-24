@@ -7,7 +7,7 @@
 
 Curso en linea, plataforma Windows/Linux/Mac
 
-* Taller de R
+* Objetivo
 
 =R= es un software de estadística y visualización para análisis de datos. El presente Taller tiene como objetivo conocer las generalidades básicas de =R=. En el curso aprenderas a instalar R, así las distintas interfases de usuario (GUI) disponibles, usar listas, manejar data frames, escribir y leer datos, gráficar, crear funciones y más. =R= es un software multiplataforma que puede ser instalado en Windows, Linux y Mac.
 
