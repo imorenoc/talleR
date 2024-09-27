@@ -1,0 +1,488 @@
+#+title: Taller de R. Clase 03
+#+author: Dr. Isaías Moreno Cruz
+#+email: ismoc@cio.mx
+#+date: 30-09-2024
+#+latex_header: \mode<beamer>{\usetheme{Madrid}}
+
+
+* Ejercicio
+
+Matriz
+
+#+begin_src R :results output :session clase :exports both
+  df <- read.table("./../clase_02/data/xyz.dat", sep=",", header=FALSE)
+  names(df) <- c("x", "y", "z")
+  head(df)  
+  dim(df)
+  n<- sqrt(length(df$z))
+  M <- matrix(df$z, nrow=n, ncol=n)
+#+end_src
+
+#+RESULTS:
+:           x         y z
+: 1 -0.965522 -0.919243 0
+: 2 -0.965522 -0.870672 0
+: 3 -0.965522 -0.822101 0
+: 4 -0.965522 -0.773530 0
+: 5 -0.965522 -0.724959 0
+: 6 -0.965522 -0.676387 0
+: [1] 1600    3
+
+* Ejercicio II
+
+#+begin_src R :results output :session clase :exports both
+  library(plot.matrix)
+  plot(M)
+#+end_src
+
+#+RESULTS:
+
+
+* cbind-ing y rbind-ing
+
+Las matrices pueden ser creadas por column-dinding (unión de columnas) o row-binding con cbind() y rbind()
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- 1:3
+  y <- 10:12
+  cbind(x,y)
+  rbind(x,y)
+#+end_src
+
+#+RESULTS:
+:      x  y
+: [1,] 1 10
+: [2,] 2 11
+: [3,] 3 12
+:   [,1] [,2] [,3]
+: x    1    2    3
+: y   10   11   12
+
+* List
+
+La lista es un tipo especial de vector que puede contener elementos de diferente clase. Las listas son muy importantes en R.
+
+** R 
+#+begin_src R :results output :session clase :exports both
+  x <- list(1, "a", TRUE, 1+4i)
+  x
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[[1]]
+[1] 1
+
+[[2]]
+[1] "a"
+
+[[3]]
+[1] TRUE
+
+[[4]]
+[1] 1+4i
+#+end_example
+
+* Factors
+
+Los factores son usados para representar una categoria.
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- factor(c("yes", "yes", "no", "yes", "no"))
+  x
+  table(x)
+  unclass(x)
+#+end_src
+
+#+RESULTS:
+: [1] yes yes no  yes no 
+: Levels: no yes
+: x
+:  no yes 
+:   2   3
+: [1] 2 2 1 2 1
+: attr(,"levels")
+: [1] "no"  "yes"
+
+El orden  de los niveles pueden ser fijados utilizando el argumento =levels= en la función factor(). Esto puede ser importante en modelos lineales porque el primer nivel es usado como linea base.
+
+** R
+#+begin_src R :results output :session clase :exports both
+    x <- factor(c("yes", "yes", "no", "yes", "no"),
+		levels=c("yes", "no"))
+    x
+#+end_src
+
+#+RESULTS:
+: [1] yes yes no  yes no 
+: Levels: yes no
+
+* Missing Values
+
+Los valores perdidos son denotados por NA o NaN para definir una operación matemática indefinida.
+
+- is.na() usado para probar si hay Na en un objeto
+- is.nan() usado para probar si hay NaN en un objeto
+- El valor de NA tienen clase.
+- El valor de NaN es también NA, pero no viceversa. 
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- c(1, 2, NA, 10, 3)
+  is.na(x)
+  is.nan(x)
+#+end_src
+
+#+RESULTS:
+: [1] FALSE FALSE  TRUE FALSE FALSE
+: [1] FALSE FALSE FALSE FALSE FALSE
+
+* Data Frame
+
+Data frames son usados para almacenar datos de manera tabular
+
+- Son representados como un tipo de lista especial donde cada elemento de la lista tiene la misma longitud
+- A diferencia de las matrices, los datas frame pueden almacenar diferentes tipos de clases en cada columna
+- Data frames tienen un atributo especial llamado =row.names=
+- Data frame son usualmente creados usando =read.table()= o =read.csv()=
+- Pueden ser convertidos a una matriz al usar =data.matrix()=
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- data.frame(foo=1:4, bar=c(T, T, F, F))
+  x
+  nrow(x)
+  ncol(x)
+#+end_src
+
+#+RESULTS:
+:   foo   bar
+: 1   1  TRUE
+: 2   2  TRUE
+: 3   3 FALSE
+: 4   4 FALSE
+: [1] 4
+: [1] 2
+
+* Names
+
+Los objetos de R pueden tener names, lo que es muy útil para escribir código leíble y auto-descriptible
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- 1:3
+  names(x)
+  names(x) <- c("foo", "bar", "north")
+  x
+  names(x)
+#+end_src
+
+#+RESULTS:
+: NULL
+:   foo   bar north 
+:     1     2     3
+: [1] "foo"   "bar"   "north"
+
+Las listas puden tener nombres
+
+** R 
+#+begin_src R :results output :session clase :exports both
+  x <- list(a=1, b=2, c=3)
+  x
+#+end_src
+
+#+RESULTS:
+: $a
+: [1] 1
+: 
+: $b
+: [1] 2
+: 
+: $c
+: [1] 3
+
+* Names II
+
+Las matrices también pueden tener nombres
+
+** R
+#+begin_src R :results output :session clase :exports both
+  m <- matrix(1:4, nrow=2, ncol=2)
+  dimnames(m) <- list(c("a", "b"), c("c", "d"))
+  m
+#+end_src
+
+#+RESULTS:
+:   c d
+: a 1 3
+: b 2 4
+
+* Subsetting (subconjunto)
+
+Hay un numero de operadores que pueden utilizarse para extraer una subserie de objetos R
+
+- [ siempre regresa un objeto de la misma clase que el original
+- [[ es usado para extraer elementos de una lista o de un data frame
+- $ es usado para extraer elementos de una lista o de el nombre de un data frame
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- c("a", "b", "c", "c", "d", "a")
+  x[1]
+  x[2]
+#+end_src
+
+#+RESULTS:
+: [1] "a"
+: [1] "b"
+
+#+begin_src R :results output :session clase :exports both
+x[1:4]
+#+end_src
+
+#+RESULTS:
+: [1] "a" "b" "c" "c"
+
+
+#+begin_src R :results output :session clase :exports both
+x[x> "a"]
+#+end_src
+
+#+RESULTS:
+: [1] "b" "c" "c" "d"
+
+#+begin_src R :results output :session clase :exports both
+  u <- x>"a"
+  u
+  x[u]
+#+end_src
+
+#+RESULTS:
+: [1] FALSE  TRUE  TRUE  TRUE  TRUE FALSE
+: [1] "b" "c" "c" "d"
+
+* Subsetting a Matrix
+
+Las matrices pueden ser filtradas en la forma común de indices (i,j)
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- matrix(1:6, 2,3)
+  x
+  x[1,2]
+  x[2,1]
+#+end_src
+
+#+RESULTS:
+: [1] 3
+: [1] 2
+
+## Los indices se pueden omitir
+
+#+begin_src R :results output :session clase :exports both
+  x[1,]
+  x[,2]
+#+end_src
+
+#+RESULTS:
+: [1] 1 3 5
+: [1] 3 4
+
+
+## Por default, return a vector de longitud uno. Este comportamiento puede ser cambiando mediante drop=FALSE
+
+#+begin_src R :results output :session clase :exports both
+  x[1,2]
+  x[1,2, drop=FALSE]
+#+end_src
+
+#+RESULTS:
+: [1] 3
+:      [,1]
+: [1,]    3
+
+
+* Subsetting Lists
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- list(foo=1:4, bar=0.6)
+  x
+#+end_src
+
+#+RESULTS:
+: $foo
+: [1] 1 2 3 4
+: 
+: $bar
+: [1] 0.6
+
+#+begin_src R :results output :session clase :exports both
+  x[[1]]
+#+end_src
+
+#+RESULTS:
+: [1] 1 2 3 4
+
+#+begin_src R :results output :session clase :exports both
+  x$bar
+#+end_src
+
+#+RESULTS:
+: [1] 0.6
+
+#+begin_src R :results output :session clase :exports both
+  x[["bar"]]
+#+end_src
+
+#+RESULTS:
+: [1] 0.6
+
+#+begin_src R :results output :session clase :exports both
+  x["bar"]
+#+end_src
+
+#+RESULTS:
+: $bar
+: [1] 0.6
+
+* Subsetting List II
+
+El operador [[ puede ser usado con indices; y $ solo puede ser usado con nombres literales
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- list(foo=1:4, bar=0.6, baz="hello")
+  name <- "foo"
+  x[[name]]
+  x$name
+#+end_src
+
+#+RESULTS:
+: [1] 1 2 3 4
+: NULL
+
+** R
+## El [[ puede tomar una secuencia
+
+#+begin_src R :results output :session clase :exports both
+  x <- list(a=list(10,12,14), b=c(3.14,2.81))
+  x[[c(1,3)]]
+  x[[1]][[3]]
+#+end_src
+
+#+RESULTS:
+: [1] 14
+: [1] 14
+
+* Partial Matching
+
+Coincidencia parcial de un nombre con [[ o $
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x<- list(aardvark=1:5)
+  x$a
+  x[["a"]]
+  x[["a", exact=FALSE]]
+#+end_src
+
+#+RESULTS:
+: [1] 1 2 3 4 5
+: NULL
+: [1] 1 2 3 4 5
+
+
+* Remove NA Values
+
+Una tarea común es remover los valores perdidos (NAs)
+
+** R
+#+begin_src R :results output :session clase :exports both
+  x <- c(1,2,NA, 4, NA, 5)
+  bad <- is.na(x)
+  x[!bad]
+#+end_src
+
+#+RESULTS:
+: [1] 1 2 4 5
+
+** R 
+#+begin_src R :results output :session clase :exports both
+  x <- c(1,2,NA, 4, NA, 5)
+  y <- c("a", "b", NA, "d", NA, "f")
+  good <- complete.cases(x,y)
+  good
+  x[good]
+  y[good]
+#+end_src
+
+#+RESULTS:
+: [1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+: [1] 1 2 4 5
+: [1] "a" "b" "d" "f"
+
+
+
+* Remove NA Values
+
+** R 
+#+begin_src R :results output :session clase :exports both
+  airquality[1:6, ]
+  good <- complete.cases(airquality)
+  airquality[good,][1:6,]
+#+end_src
+
+#+RESULTS:
+#+begin_example
+  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6
+  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+7    23     299  8.6   65     5   7
+8    19      99 13.8   59     5   8
+#+end_example
+
+* Ejercicio
+
+- Apartir del =dataframe airquality=, filtar los datos para el mes de agosto
+- Apartir del =dataframe airquality=, filtrar los dias 21
+- Apartir del =dataframe airquality=, filtar las temperaturas más alta e indicar el mes. 
+  
+** R
+#+begin_src R :results output :session clase :exports none
+  #head(airquality)
+  df <- airquality
+  filter<- df$Month == 8
+  head(df[filter,])
+
+#+end_src
+
+#+RESULTS:
+:    Ozone Solar.R Wind Temp Month Day
+: 93    39      83  6.9   81     8   1
+: 94     9      24 13.8   81     8   2
+: 95    16      77  7.4   82     8   3
+: 96    78      NA  6.9   86     8   4
+: 97    35      NA  7.4   85     8   5
+: 98    66      NA  4.6   87     8   6
+
+#+begin_src R :results output :session clase :exports none
+  df <- airquality
+  x <- max(df$Temp)
+  df[df$Temp == x,]
+#+end_src
+
+#+RESULTS:
+:     Ozone Solar.R Wind Temp Month Day
+: 120    76     203  9.7   97     8  28
