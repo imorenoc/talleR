@@ -1,0 +1,643 @@
+#+title: Taller de R. Clase 04
+#+author: Dr. Isaías Moreno Cruz
+#+email: ismoc@cio.mx
+#+date: 02-10-2024
+#+latex_header: \mode<beamer>{\usetheme{Madrid}}
+
+* Vectorized Operations
+
+* Operaciones vectoriales
+
+Muchas operaciones en R son vectorizadas haciendo el codigo más eficientes
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- 1:4; y<-6:9
+  x + y
+  x > 2
+  x >= 2
+  y==8
+  x*y
+  x/y
+#+end_src
+
+#+RESULTS:
+: [1]  7  9 11 13
+: [1] FALSE FALSE  TRUE  TRUE
+: [1] FALSE  TRUE  TRUE  TRUE
+: [1] FALSE FALSE  TRUE FALSE
+: [1]  6 14 24 36
+: [1] 0.1666667 0.2857143 0.3750000 0.4444444
+
+
+* Operaciones vectoriales con matrices
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- matrix(1:4,2,2); y <- matrix(rep(10,4),2,2)
+  x*y
+  x/y
+#+end_src
+
+#+RESULTS:
+:      [,1] [,2]
+: [1,]   10   30
+: [2,]   20   40
+:      [,1] [,2]
+: [1,]  0.1  0.3
+: [2,]  0.2  0.4
+
+
+** R
+Verdadera multipliación matricial
+#+begin_src R :results output :session curso :exports both
+  x%*%y
+#+end_src
+
+#+RESULTS:
+:      [,1] [,2]
+: [1,]   40   40
+: [2,]   60   60
+
+* Reading and Writing Data
+
+* Reading Data
+
+Hay algunas funciones principales para leer datos en R
+
+- =read.table=, =read.csv=, para leer datos tabulares
+- =readLines=, para leer lineas de texto del archivo
+- =source=, para leer archivos de código en R (=file.R=, inverso de =dump=)
+- =dget=, para leer archivos de código en R (inverso de =dput=)
+- =load=, para leer espacios de trabajo salvados (=file.rda=)
+- =unserialize=, para leer objetos de R in forma binaria
+
+* Writing Data
+
+Existen funciones analogas para la escritura de datos
+
+- write.table
+- writeLines
+- dump
+- dput
+- save (file.rda)
+- serialize
+
+* read.table
+
+La función =read.table= es una de las funciones usadas más comunes para lear datos. Tienes pocos argumentos importantes:
+
+- file
+- header
+- sep
+- colClassess
+- nrows
+- comment.char
+- skip
+- stringsAsFactors
+
+
+#+begin_src sh :results output
+  head ./data/preciosBCSday.csv
+#+end_src
+
+#+RESULTS:
+#+begin_example
+fecha,hora,p_marginal,comEnergia,cPerdidas,cCongestion
+2022-01-01,11.5,2177.486494252874,2181.1208333333334,-3.6348706896551723,0.0
+2022-01-02,11.5,2236.127629310345,2237.89125,-1.7629454022988509,0.0
+2022-01-03,11.5,2271.685646551724,2265.4079166666666,6.2781321839080455,0.0
+2022-01-04,11.5,2368.1241666666665,2369.3441666666668,-1.2186637931034483,0.0
+2022-01-05,11.5,2444.538649425287,2449.630416666667,-5.092485632183908,0.0
+2022-01-06,11.5,2375.387327586207,2377.8591666666666,-2.4717816091954026,0.0
+2022-01-07,11.5,2492.345316091954,2489.6775000000002,2.66875,0.0
+2022-01-08,11.5,2506.731609195402,2511.1541666666667,-4.422140804597701,0.0
+2022-01-09,11.5,2484.240761494253,2490.8345833333333,-6.592787356321839,0.0
+#+end_example
+
+#+begin_src R :results output :session curso :exports both
+
+  file <- "./data/preciosBCSday.csv"
+  data <- read.table(file, sep=',', header=TRUE)
+  head(data)
+
+#+end_src
+
+#+RESULTS:
+:        fecha hora p_marginal comEnergia cPerdidas cCongestion
+: 1 2022-01-01 11.5   2177.486   2181.121 -3.634871           0
+: 2 2022-01-02 11.5   2236.128   2237.891 -1.762945           0
+: 3 2022-01-03 11.5   2271.686   2265.408  6.278132           0
+: 4 2022-01-04 11.5   2368.124   2369.344 -1.218664           0
+: 5 2022-01-05 11.5   2444.539   2449.630 -5.092486           0
+: 6 2022-01-06 11.5   2375.387   2377.859 -2.471782           0
+
+* readLines
+
+#+begin_src R :results output :session curso :exports both
+
+  file <- "./data/homicides.txt"
+  data <- readLines(file)
+  data[2]
+
+#+end_src
+
+#+RESULTS:
+: [1] "39.312641, -76.698948, iconHomicideShooting, 'p3', '<dl><dt>Eddie Golf</dt><dd class=\"address\">4900 Challedon Road<br />Baltimore, MD 21207</dd><dd>black male, 26 years old</dd><dd>Found on January 2, 2007</dd><dd>Victim died at scene</dd><dd>Cause: shooting</dd></dl>'"
+
+* Control Structures
+
+Estructuras de control en R. Estructuras comunes:
+
+- =if, else=
+- =for=
+- =while=
+- =repeat=
+- =break=
+- =next=
+- =return=
+
+
+* if
+
+** R
+#+begin_src R :results none
+  if(<condition>) {
+  ## do something
+  } else {
+  ## do something
+  }  
+#+end_src
+
+** R
+#+begin_src R :results none
+  if(<condition>) {
+  ## do something
+  } else if(<condition2>){
+  ## do something
+  } else {
+  ## do something
+  }   
+#+end_src
+
+
+* if II
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- 10
+  
+  if(x>3){
+    y <- 10
+  } else {
+    y<-0
+  }
+
+  print(y)
+#+end_src
+
+#+RESULTS:
+: [1] 10
+
+* for
+
+** R
+#+begin_src R :results output :session curso :exports both
+  for(i in 1:5) {
+    print(i)
+  }  
+#+end_src
+
+#+RESULTS:
+: [1] 1
+: [1] 2
+: [1] 3
+: [1] 4
+: [1] 5
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- c("a", "b", "c", "d")
+  for(i in 1:4) {
+    print(x[i])
+  }  
+#+end_src
+
+#+RESULTS:
+: [1] "a"
+: [1] "b"
+: [1] "c"
+: [1] "d"
+
+** R
+#+begin_src R :results output :session curso :exports both
+  for(i in seq_along(x)) {
+    print(x[i])
+  }  
+#+end_src
+
+#+RESULTS:
+: [1] "a"
+: [1] "b"
+: [1] "c"
+: [1] "d"
+
+** R
+#+begin_src R :results output :session curso :exports both
+  for(letter in x) {
+    print(letter)
+  }  
+#+end_src
+
+#+RESULTS:
+: [1] "a"
+: [1] "b"
+: [1] "c"
+: [1] "d"
+
+* Matrices
+
+** R 
+#+begin_src R :results output :session curso :exports both
+  x <- matrix(1:6, 2,3)
+  for(i in seq_len(nrow(x))){
+    for(j in seq_len(ncol(x))){
+      print(x[i,j])
+      }
+    }
+#+end_src
+
+#+RESULTS:
+: [1] 1
+: [1] 3
+: [1] 5
+: [1] 2
+: [1] 4
+: [1] 6
+
+* while
+
+** R
+#+begin_src R :results output :session curso :exports both
+  count <- 0
+  while(count < 10){
+    print(count)
+    count <- count + 1
+    }
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[1] 0
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+#+end_example
+
+
+* Functions
+
+** R
+#+begin_src R :results none :exports both
+  f <- function(<arguments>){
+  ## Do something
+    }
+#+end_src
+
+
+* Argument matching
+
+** R
+#+begin_src R :results output :session curso :exports both
+args(lm)
+#+end_src
+
+#+RESULTS:
+: function (formula, data, subset, weights, na.action, method = "qr", 
+:     model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
+:     contrasts = NULL, offset, ...) 
+: NULL
+
+* Definir una función
+
+** R
+#+begin_src R :results output :session curso :exports both
+  d2r <- function(x){
+    return(x*pi/180)
+    }
+  
+  d2r(180)
+#+end_src
+
+#+RESULTS:
+: [1] 3.141593
+
+* Argumento de "..."
+
+
+El argumento de "..." indica un numero de variables de argumentos que son usadas en otras funciones
+
+** R
+#+begin_src R :results none
+  myplot <- function(x,y,type="l", ...){
+  plot(x,y,type=type, ...)
+  }
+#+end_src
+
+
+* Funciones de funciones
+
+** R
+#+begin_src R :results output :session curso :exports both
+  make.power <- function(n){
+    pow <- function(x){
+      x^n
+    }
+    pow
+  }
+
+  cube <- make.power(3)
+  square <- make.power(2)
+
+  cube(3)
+  square(3)
+#+end_src
+
+#+RESULTS:
+: [1] 27
+: [1] 9
+
+
+
+* Loop Function
+
+Existen algunas funciones que implementan bucles para facilitar la programación
+
+- =lapply=, loop sobre una lista y evalua una función en cada elemento 
+- =sapply=, lo mismo que =lapply= pero trata de simplificar el resultado 
+- =apply=, aplica una función sobre los margenes de un arreglo
+- =tapply=, aplica una función sobre los subconjuntos de un vector
+- =mapply=, versión multivariable de lapply
+
+ Una función auxiliar es =split= también útil, en particular con =lapply=.
+
+* lapply
+
+=lapply= siempre regresa una lista.
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- list(a=1:5, b=rnorm(10))
+  lapply(x, mean)
+#+end_src
+
+#+RESULTS:
+: $a
+: [1] 3
+: 
+: $b
+: [1] -0.2094381
+
+
+* lapply II
+
+=lapply=, y las demás, usa funciones anónimas
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- list(a = matrix(1:4,2,2), b = matrix(1:6,3,2))
+  x
+#+end_src
+
+#+RESULTS:
+#+begin_example
+$a
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+$b
+     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6
+#+end_example
+
+
+** R
+Y se desea extraer la primera columna de ambas matrices.
+
+#+begin_src R :results output :session curso :exports both
+  lapply(x, function(elt) elt[,1])
+#+end_src
+
+#+RESULTS:
+: $a
+: [1] 1 2
+: 
+: $b
+: [1] 1 2 3
+
+* sapply
+
+=sapply= trata de simplificar el resultado de =lapply=.
+
+** R 
+#+begin_src R :results output :session curso :exports both
+  x <- list(a=1:4, b=rnorm(10), c=rnorm(20,1), d=rnorm(100,5))
+  lapply(x, mean)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+$a
+[1] 2.5
+
+$b
+[1] -0.1226583
+
+$c
+[1] 1.02448
+
+$d
+[1] 4.94286
+#+end_example
+
+** R
+#+begin_src R :results output :session curso :exports both
+sapply(x, mean)
+#+end_src
+
+#+RESULTS:
+:          a          b          c          d 
+:  2.5000000 -0.1226583  1.0244796  4.9428599
+
+* apply
+
+=apply= es usado para evaluar una función (frecuentemente una anónima) sobre el margen de un arreglo.
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- matrix(rnorm(20), 5,4)
+  x
+#+end_src
+
+#+RESULTS:
+:            [,1]       [,2]       [,3]        [,4]
+: [1,]  0.7552447 -2.0409268 -1.1802988 -0.14962021
+: [2,] -0.3612420  0.4025746  0.8536489 -0.43940988
+: [3,] -0.1206896  0.6039853 -1.0604170 -0.73377721
+: [4,]  0.2825351 -0.5408644 -2.5579296 -0.21977122
+: [5,]  0.2485246 -2.2835958 -0.6298257 -0.04059617
+
+** R 
+#+begin_src R :results output :session curso :exports both
+  apply(x,2,mean)
+#+end_src
+
+#+RESULTS:
+: [1]  0.1608746 -0.7717654 -0.9149644 -0.3166349
+
+** R
+#+begin_src R :results output :session curso :exports both
+  apply(x,1,mean)
+#+end_src
+
+#+RESULTS:
+: [1] -0.6539003  0.1138929 -0.3277246 -0.7590075 -0.6763733
+
+
+* apply II
+
+Para la suma y el promedio de las dimensiones de matrices, se tiene algunos atajos
+
+- rowSums = apply(x,1,sum)
+- rowMeans = apply(x,1,mean)
+- colSums = apply(x,2,sum)
+- colMeans = apply(x,2,mean)
+
+
+Cuartiles en filas de matrices
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x<- matrix(rnorm(160), 8, 20)
+  apply(x, 1, quantile, probs=c(0.25, 0.5, 0.75))
+#+end_src
+
+#+RESULTS:
+:            [,1]       [,2]        [,3]        [,4]        [,5]       [,6]       [,7]       [,8]
+: 25% -0.56445163 -0.6776988 -0.46433764 -0.76221683 -0.06502871 -0.2561606 -0.8169621 -0.4951658
+: 50%  0.01410984 -0.1348199  0.01147909  0.09052132  0.19501059  0.1223415 -0.2008024  0.0628272
+: 75%  0.49142764  0.7490381  0.84030834  0.86543623  0.56892792  0.8345716  0.4727538  0.8689835
+
+* tapply
+
+
+=tapply= es usado para aplicar a una función sobre subconjuntos de un vector.
+
+** R
+#+begin_src R :results output :session curso :exports both
+str(tapply)
+#+end_src
+
+#+RESULTS:
+: function (X, INDEX, FUN = NULL, ..., default = NA, simplify = TRUE)
+
+- X es un vector
+- INDEX es un factor o una lista de factores
+- FUN es una función para ser aplicada
+- ... contiene otros argumentos de la función FUN
+- simplify, debe simplificar el resultado?
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- c(rnorm(10), runif(10), rnorm(10,1))
+  f <- gl(3,10) ## Genera niveles de factores
+  f
+#+end_src
+
+#+RESULTS:
+:  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
+: Levels: 1 2 3
+
+** R
+#+begin_src R :results output :session curso :exports both
+ tapply(x, f, mean)
+#+end_src
+
+#+RESULTS:
+:          1          2          3 
+: -0.2195011  0.6610954  1.1289007
+
+* split
+
+=split= toma un vector o otros objetos y separarlo en grupos determinados por un factor o lista de factores.
+
+
+#+begin_src R :results output :session curso :exports both
+  x <- c(rnorm(10), runif(10), rnorm(10,1))
+  f <- gl(3,10)
+  split(x,f)
+#+end_src
+
+#+RESULTS:
+: $`1`
+:  [1]  0.8702612 -1.8441661 -0.5196864  0.2005001 -0.3028120 -1.8411893 -0.5149094 -0.9081394 -0.2087667 -0.2777377
+: 
+: $`2`
+:  [1] 0.4507907 0.4535619 0.6916277 0.8304266 0.8121124 0.2443439 0.5401528 0.6138010 0.6801611 0.5228893
+: 
+: $`3`
+:  [1] -0.002691316  0.304618892  1.245104727  0.914916657  1.399524298  2.314951530  0.797344283  0.850026751
+:  [9] -0.089822084  2.627688931
+
+#+begin_src R :results output :session curso :exports both
+  lapply( split(x,f), mean)
+#+end_src
+
+#+RESULTS:
+: $`1`
+: [1] -0.5346646
+: 
+: $`2`
+: [1] 0.5839868
+: 
+: $`3`
+: [1] 1.036166
+
+* mapply
+
+=mapply= es una aplicación multivariable.
+
+#+begin_src R :results output :session curso :exports both
+str(mapply)
+#+end_src
+
+#+RESULTS:
+: function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE)
+
+
+* Ejercicio
+
+Leer los archivos en =dbeta= y concatenarlos en un único archivo
+
+#+begin_src R :results output :session curso
+  rut <- "./data/dbeta" 
+  files <- list.files(path=rut, pattern=".dat")
+  path <- paste(rut, "/", files[1], sep="")
+  df <- read.table(path, sep=",", header=FALSE, skip=1)
+  for(f in files[-1]){
+    path <- paste(rut, "/", f, sep="")
+    aux <- read.table(path, sep=",", header=FALSE, skip=1)
+    df <- rbind(df, aux)
+    }
+#+end_src
+
+#+RESULTS:
