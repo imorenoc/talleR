@@ -1,0 +1,539 @@
+#+title: Taller de R. Clase 05
+#+author: Dr. Isaías Moreno Cruz
+#+email: ismoc@cio.mx
+#+date: 07-10-2024
+#+latex_header: \mode<beamer>{\usetheme{Madrid}}
+
+* Loop Function
+
+Existen algunas funciones que implementan bucles para facilitar la programación
+
+- =lapply=, loop sobre una lista y evalua una función en cada elemento 
+- =sapply=, lo mismo que =lapply= pero trata de simplificar el resultado 
+- =apply=, aplica una función sobre los margenes de un arreglo
+- =tapply=, aplica una función sobre los subconjuntos de un vector
+- =mapply=, versión multivariable de lapply
+
+ Una función auxiliar es =split= también útil, en particular con =lapply=.
+
+* lapply
+
+=lapply= siempre regresa una lista.
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- list(a=1:5, b=rnorm(10))
+  lapply(x, mean)
+#+end_src
+
+#+RESULTS:
+: $a
+: [1] 3
+: 
+: $b
+: [1] -0.2094381
+
+
+* lapply II
+
+=lapply=, y las demás, usa funciones anónimas
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- list(a = matrix(1:4,2,2), b = matrix(1:6,3,2))
+  x
+#+end_src
+
+#+RESULTS:
+#+begin_example
+$a
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+$b
+     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6
+#+end_example
+
+
+** R
+Y se desea extraer la primera columna de ambas matrices.
+
+#+begin_src R :results output :session curso :exports both
+  lapply(x, function(elt) elt[,1])
+#+end_src
+
+#+RESULTS:
+: $a
+: [1] 1 2
+: 
+: $b
+: [1] 1 2 3
+
+* sapply
+
+=sapply= trata de simplificar el resultado de =lapply=.
+
+** R 
+#+begin_src R :results output :session curso :exports both
+  x <- list(a=1:4, b=rnorm(10), c=rnorm(20,1), d=rnorm(100,5))
+  lapply(x, mean)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+$a
+[1] 2.5
+
+$b
+[1] -0.1226583
+
+$c
+[1] 1.02448
+
+$d
+[1] 4.94286
+#+end_example
+
+** R
+#+begin_src R :results output :session curso :exports both
+sapply(x, mean)
+#+end_src
+
+#+RESULTS:
+:          a          b          c          d 
+:  2.5000000 -0.1226583  1.0244796  4.9428599
+
+* apply
+
+=apply= es usado para evaluar una función (frecuentemente una anónima) sobre el margen de un arreglo.
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- matrix(rnorm(20), 5,4)
+  x
+#+end_src
+
+#+RESULTS:
+:            [,1]       [,2]       [,3]        [,4]
+: [1,]  0.7552447 -2.0409268 -1.1802988 -0.14962021
+: [2,] -0.3612420  0.4025746  0.8536489 -0.43940988
+: [3,] -0.1206896  0.6039853 -1.0604170 -0.73377721
+: [4,]  0.2825351 -0.5408644 -2.5579296 -0.21977122
+: [5,]  0.2485246 -2.2835958 -0.6298257 -0.04059617
+
+** R 
+#+begin_src R :results output :session curso :exports both
+  apply(x,2,mean)
+#+end_src
+
+#+RESULTS:
+: [1]  0.1608746 -0.7717654 -0.9149644 -0.3166349
+
+** R
+#+begin_src R :results output :session curso :exports both
+  apply(x,1,mean)
+#+end_src
+
+#+RESULTS:
+: [1] -0.6539003  0.1138929 -0.3277246 -0.7590075 -0.6763733
+
+
+* apply II
+
+Para la suma y el promedio de las dimensiones de matrices, se tiene algunos atajos
+
+- rowSums = apply(x,1,sum)
+- rowMeans = apply(x,1,mean)
+- colSums = apply(x,2,sum)
+- colMeans = apply(x,2,mean)
+
+
+Cuartiles en filas de matrices
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x<- matrix(rnorm(160), 8, 20)
+  apply(x, 1, quantile, probs=c(0.25, 0.5, 0.75))
+#+end_src
+
+#+RESULTS:
+:            [,1]       [,2]        [,3]        [,4]        [,5]       [,6]       [,7]       [,8]
+: 25% -0.56445163 -0.6776988 -0.46433764 -0.76221683 -0.06502871 -0.2561606 -0.8169621 -0.4951658
+: 50%  0.01410984 -0.1348199  0.01147909  0.09052132  0.19501059  0.1223415 -0.2008024  0.0628272
+: 75%  0.49142764  0.7490381  0.84030834  0.86543623  0.56892792  0.8345716  0.4727538  0.8689835
+
+* tapply
+
+
+=tapply= es usado para aplicar a una función sobre subconjuntos de un vector.
+
+** R
+#+begin_src R :results output :session curso :exports both
+str(tapply)
+#+end_src
+
+#+RESULTS:
+: function (X, INDEX, FUN = NULL, ..., default = NA, simplify = TRUE)
+
+- X es un vector
+- INDEX es un factor o una lista de factores
+- FUN es una función para ser aplicada
+- ... contiene otros argumentos de la función FUN
+- simplify, debe simplificar el resultado?
+
+** R
+#+begin_src R :results output :session curso :exports both
+  x <- c(rnorm(10), runif(10), rnorm(10,1))
+  f <- gl(3,10) ## Genera niveles de factores
+  f
+#+end_src
+
+#+RESULTS:
+:  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
+: Levels: 1 2 3
+
+* tapply II
+
+** R
+#+begin_src R :results output :session curso :exports both
+ tapply(x, f, mean)
+#+end_src
+
+#+RESULTS:
+:         1         2         3 
+: 0.1594326 0.6164103 1.0177767
+
+* split
+
+=split= toma un vector o otros objetos y separarlo en grupos determinados por un factor o lista de factores.
+
+
+#+begin_src R :results output :session curso :exports both
+  x <- c(rnorm(10), runif(10), rnorm(10,1))
+  f <- gl(3,10)
+  split(x,f)
+#+end_src
+
+#+RESULTS:
+: $`1`
+:  [1]  0.8702612 -1.8441661 -0.5196864  0.2005001 -0.3028120 -1.8411893 -0.5149094 -0.9081394 -0.2087667 -0.2777377
+: 
+: $`2`
+:  [1] 0.4507907 0.4535619 0.6916277 0.8304266 0.8121124 0.2443439 0.5401528 0.6138010 0.6801611 0.5228893
+: 
+: $`3`
+:  [1] -0.002691316  0.304618892  1.245104727  0.914916657  1.399524298  2.314951530  0.797344283  0.850026751
+:  [9] -0.089822084  2.627688931
+
+#+begin_src R :results output :session curso :exports both
+  lapply( split(x,f), mean)
+#+end_src
+
+#+RESULTS:
+: $`1`
+: [1] -0.5346646
+: 
+: $`2`
+: [1] 0.5839868
+: 
+: $`3`
+: [1] 1.036166
+
+* mapply
+
+=mapply= es una aplicación multivariable.
+
+#+begin_src R :results output :session curso :exports both
+str(mapply)
+#+end_src
+
+#+RESULTS:
+: function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE)
+
+
+* Ejercicio
+
+Leer los datos en distintos archivos de dbeta y guardarlos a una lista
+
+
+#+begin_src R :results output :session curso
+  rut <- "./data/dbeta" 
+  files <- list.files(path=rut, pattern=".dat")
+  path <- paste(rut, "/", files[1], sep="")
+  df <- read.table(path, sep=",", header=FALSE, skip=1)
+  #names(df)<- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')
+  l <- list(df)
+  for(f in files[-1]){
+    path <- paste(rut, "/", f, sep="")
+    df <- read.table(path, sep=",", header=FALSE, skip=1)
+    #names(df)<- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')
+    len<-length(l)
+    l[[len+1]] <- df
+    }
+
+  length(l)
+#+end_src
+
+#+RESULTS:
+: [1] 10
+
+
+Obtener la distancia primedio entre 
+
+#+begin_src R :results output :session curso
+  lapply(l, function(x) mean(sqrt(x[[7]]^2+x[[9]]^2)) )
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[[1]]
+[1] 0.7349544
+
+[[2]]
+[1] 0.02026331
+
+[[3]]
+[1] 1.570952
+
+[[4]]
+[1] 0.09824783
+
+[[5]]
+[1] 2.69172
+
+[[6]]
+[1] 0.7349544
+
+[[7]]
+[1] 0.02026331
+
+[[8]]
+[1] 1.570952
+
+[[9]]
+[1] 0.09824783
+
+[[10]]
+[1] 2.69172
+#+end_example
+
+
+#+begin_src R :results output :session curso
+  sapply(l, function(x) mean(sqrt(x[[7]]^2+x[[9]]^2)) )
+#+end_src
+
+#+RESULTS:
+:  [1] 0.73495440 0.02026331 1.57095173 0.09824783 2.69171970 0.73495440 0.02026331 1.57095173 0.09824783 2.69171970
+
+* Ejercicio II
+
+Leer los archivos en =dbeta= y concatenarlos en un único archivo
+
+#+begin_src R :results output :session curso
+  rut <- "./data/dbeta" 
+  files <- list.files(path=rut, pattern=".dat")
+  path <- paste(rut, "/", files[1], sep="")
+  df <- read.table(path, sep=",", header=FALSE, skip=1)
+  for(f in files[-1]){
+    path <- paste(rut, "/", f, sep="")
+    aux <- read.table(path, sep=",", header=FALSE, skip=1)
+    df <- rbind(df, aux)
+    }
+  names(df)<- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')
+  time <- strptime(df$tiempo, "%Y-%m-%d %H:%M:%S")
+  df$tiempo <- time
+  head(df)
+#+end_src
+
+#+RESULTS:
+:     id              tiempo   cenit    acimut declinacion        d      p1 p2      p3      r    tsolar
+: 1 5087 2024-06-21 07:25:34 66.5503 -104.7951     23.4364 114.8646 -0.4847  0 -0.1754 0.5155  06:59:00
+: 2 5087 2024-06-21 07:26:34 66.3393 -104.6980     23.4364 114.8646 -0.4855  0 -0.1792 0.5175  07:00:00
+: 3 5087 2024-06-21 07:31:34 65.2827 -104.2138     23.4363 114.8646 -0.4893  0 -0.1982 0.5279  07:05:00
+: 4 5087 2024-06-21 07:36:34 64.2238 -103.7316     23.4363 114.8646 -0.4928  0 -0.2173 0.5386  07:10:00
+: 5 5087 2024-06-21 07:41:34 63.1626 -103.2510     23.4363 114.8646 -0.4962  0 -0.2367 0.5497  07:15:00
+: 6 5087 2024-06-21 07:46:34 62.0992 -102.7717     23.4363 114.8646 -0.4992  0 -0.2562 0.5611  07:20:00
+
+#+begin_src R :results output :session curso :exports both
+ tapply(df$p1, df$tiempo$yday, mean)
+#+end_src
+
+#+RESULTS:
+:       172       215       233       249       264       279       294       313       355 
+: 0.1094235 0.1216368 0.1333419 0.1402298 0.1454683 0.1882011 0.1896050 0.1910719 0.1923433
+
+#+begin_src R :results output :session curso :exports both
+ sapply( split(df$p1, df$tiempo$yday), mean) 
+#+end_src
+
+#+RESULTS:
+:       172       215       233       249       264       279       294       313       355 
+: 0.1094235 0.1216368 0.1333419 0.1402298 0.1454683 0.1882011 0.1896050 0.1910719 0.1923433
+
+
+* Generación de numeros aleatorios
+
+Funciones de distribución de probabilidad en R
+
+- =rnorm=, genera aleatorios con una distribución normal, con una media y una desviación estándar 
+- =dnorm=, evalua la densidad de probabilidad Normal (con una media/SD) en un punto (o vector)
+- =pnorm=, evalua la distribución acumulada de una distribución normal
+- =rpois=, genera numeros aleatorios con una distribución Poisson
+
+
+Trabajando con una distribución Normal
+
+- =d= para densidad
+- =r= para generación de numeros aleatorios
+- =p= para distribución acumulada
+- =q= para cuartiles
+
+
+- dnorm(x, mean = 0, sd = 1, log =FALSE)
+- pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+- qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+- rnorm(n, mean = 0, sd = 1, log =FALSE)
+
+Sí $\Phi$ es la función de distribución acumulada para una distribución Normal, entonces $pnorm(q)=\Phi(q)$ y $qnorm(p)=\Phi^{-1}(p)$
+
+#+begin_src R :results output :session curso :exports both
+  rnorm(25)
+#+end_src
+
+#+RESULTS:
+:  [1] -0.8339162  2.7282135  1.5032002  0.2159083  0.9567205 -0.8352028  1.1098704 -0.2286399  0.1156355  0.3312220
+: [11] -0.9761586  0.8907942  2.5820284  2.5065900  1.8125590  0.1089328 -0.5557713  0.2969196  0.3253789  0.4799767
+: [21]  0.6325707  0.1663338  1.1624244 -1.1407558 -0.3130671
+
+* runif
+
+#+begin_src R :results output :session curso :exports both
+  data <- runif(1000)
+  plot(data)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src R :results output :session curso :exports both
+  data <- runif(100000)
+  hist(data)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src R :results output :session curso :exports both
+  data <- runif(100000)
+  ddata <- density(data)
+  plot(ddata)
+#+end_src
+
+#+RESULTS:
+
+
+
+* rnorm 
+
+#+begin_src R :results output :session curso :exports both
+  data <- rnorm(10000)
+  plot(data)
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src R :results output :session curso :exports both
+  data <- rnorm(100000)
+  hist(data)
+#+end_src
+
+#+begin_src R :results output :session curso :exports both
+  data <- rnorm(100000)
+  ddata <- density(data)
+  plot(ddata)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src R :results output :session curso :exports both
+  data <- rnorm(10000)
+  cdf <- ecdf(data)
+  plot(cdf)
+#+end_src
+
+#+RESULTS:
+
+
+* Ploting
+
+Las gráficas en R son encapsuladas en la base y en algunos paquetes recomendados
+
+- graphics
+- lattice
+- ggplot
+- grid
+- grDevice
+
+
+La función =par= es usada para especificar parametros globales de la gráfica que afectan todos los plots en la sesión de R.
+
+- =pch=: el simbolo de las gráficas (un circulo abierto por default)
+- =lty=: el tipo de linea
+- =lwd=: el ancho de linea
+- =col=: color de línea
+- =las=: la orientación de los ejes
+
+
+** R
+#+begin_src R :results output :session curso :exports both
+  file = "./data/hw1_data.csv"
+  df <- read.table(file, sep=',', header=TRUE)
+  head(df)
+#+end_src
+
+#+RESULTS:
+:   Ozone Solar.R Wind Temp Month Day
+: 1    41     190  7.4   67     5   1
+: 2    36     118  8.0   72     5   2
+: 3    12     149 12.6   74     5   3
+: 4    18     313 11.5   62     5   4
+: 5    NA      NA 14.3   56     5   5
+: 6    28      NA 14.9   66     5   6
+
+#+begin_src R :results output :session curso :exports both
+  dfw <- df[df$Month ==5,]
+  plot(dfw$Day, dfw$Temp, type='p')
+#+end_src
+
+#+RESULTS:
+
+
+
+#+begin_src R :results output :session curso :exports both
+  dfw <- df[df$Month ==5,]
+  png("./fig/plot01.png") ### pdf, bmp
+  plot(dfw$Day, dfw$Temp, type='l')
+  dev.off()
+#+end_src
+
+#+RESULTS:
+: png 
+:   2
+
+
+
+#+begin_src R :file ./fig/plot.png :results file graphics :session curso :exports both
+  par(mfrow=c(4,1))
+  dfw <- df[df$Month ==5,]
+  plot(dfw$Day, dfw$Temp, type='l')
+  plot(dfw$Day, dfw$Temp, type='p', pch=2)
+  plot(dfw$Day, dfw$Temp, type='l', lty=2)
+  plot(dfw$Day, dfw$Temp, type='l', col= 2)
+  par(mfrow=c(1,1))
+#+end_src
+
+#+RESULTS:
+[[file:./fig/plot.png]]
