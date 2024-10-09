@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-10-09 Wed 09:08 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taller de R. Clase 06</title>
+<meta name="author" content="Dr. Isaías Moreno Cruz" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Taller de R. Clase 06</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org4bbd3aa">1. Ejercicio</a></li>
+<li><a href="#org0b39f24">2. Ejercicio II</a></li>
+<li><a href="#org925d8e9">3. Generación de numeros aleatorios</a></li>
+<li><a href="#org88f45bb">4. runif</a></li>
+<li><a href="#org6f09eb0">5. rnorm</a></li>
+<li><a href="#org0a5ccf9">6. Ploting</a>
+<ul>
+<li><a href="#org24e9d2e">6.1. R</a></li>
+</ul>
+</li>
+<li><a href="#orgfaea538">7. Lattice</a>
+<ul>
+<li><a href="#orgb2316be">7.1. xyplot</a></li>
+<li><a href="#org4b4e0e5">7.2. Panel</a></li>
+<li><a href="#org149c07e">7.3. splom</a></li>
+<li><a href="#org89d2cf1">7.4. histogram</a></li>
+</ul>
+</li>
+<li><a href="#org1075f06">8. ggplot2</a>
+<ul>
+<li><a href="#org4b5b43d">8.1. qplot</a></li>
+<li><a href="#org602c7af">8.2. ggplot</a></li>
+<li><a href="#orgc4c189a">8.3. Modificaciones est'eticas</a></li>
+<li><a href="#org4e17268">8.4. Labels</a></li>
+<li><a href="#orgd9becce">8.5. Notas sobre los limites</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org4bbd3aa" class="outline-2">
+<h2 id="org4bbd3aa"><span class="section-number-2">1.</span> Ejercicio</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Leer los datos en distintos archivos de dbeta y guardarlos a una lista
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-R">rut <span style="color: #f5871f;">&lt;-</span> <span style="color: #718c00;">"./data/dbeta"</span> 
+files <span style="color: #f5871f;">&lt;-</span> list.files(path=rut, pattern=<span style="color: #718c00;">".dat"</span>)
+path <span style="color: #f5871f;">&lt;-</span> paste(rut, <span style="color: #718c00;">"/"</span>, files[1], sep=<span style="color: #718c00;">""</span>)
+df <span style="color: #f5871f;">&lt;-</span> read.table(path, sep=<span style="color: #718c00;">","</span>, header=<span style="color: #bb9200;">FALSE</span>, skip=1)
+<span style="color: #8e908c;">#</span><span style="color: #8e908c;">names(df)&lt;- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')</span>
+l <span style="color: #f5871f;">&lt;-</span> list(df)
+<span style="color: #8959a8;">for</span>(f <span style="color: #8959a8;">in</span> files[-1]){
+  path <span style="color: #f5871f;">&lt;-</span> paste(rut, <span style="color: #718c00;">"/"</span>, f, sep=<span style="color: #718c00;">""</span>)
+  df <span style="color: #f5871f;">&lt;-</span> read.table(path, sep=<span style="color: #718c00;">","</span>, header=<span style="color: #bb9200;">FALSE</span>, skip=1)
+  <span style="color: #8e908c;">#</span><span style="color: #8e908c;">names(df)&lt;- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')</span>
+  len<span style="color: #f5871f;">&lt;-</span>length(l)
+  l[[len+1]] <span style="color: #f5871f;">&lt;-</span> df
+  }
+
+length(l)
+</pre>
+</div>
+
+
+<p>
+Obtener la distancia primedio entre 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">lapply(l, <span style="color: #8959a8;">function</span>(x) mean(sqrt(x[[7]]^2+x[[9]]^2)) )
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-R">sapply(l, <span style="color: #8959a8;">function</span>(x) mean(sqrt(x[[7]]^2+x[[9]]^2)) )
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0b39f24" class="outline-2">
+<h2 id="org0b39f24"><span class="section-number-2">2.</span> Ejercicio II</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Leer los archivos en <code>dbeta</code> y concatenarlos en un único archivo
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">rut <span style="color: #f5871f;">&lt;-</span> <span style="color: #718c00;">"./data/dbeta"</span> 
+files <span style="color: #f5871f;">&lt;-</span> list.files(path=rut, pattern=<span style="color: #718c00;">".dat"</span>)
+path <span style="color: #f5871f;">&lt;-</span> paste(rut, <span style="color: #718c00;">"/"</span>, files[1], sep=<span style="color: #718c00;">""</span>)
+df <span style="color: #f5871f;">&lt;-</span> read.table(path, sep=<span style="color: #718c00;">","</span>, header=<span style="color: #bb9200;">FALSE</span>, skip=1)
+<span style="color: #8959a8;">for</span>(f <span style="color: #8959a8;">in</span> files[-1]){
+  path <span style="color: #f5871f;">&lt;-</span> paste(rut, <span style="color: #718c00;">"/"</span>, f, sep=<span style="color: #718c00;">""</span>)
+  aux <span style="color: #f5871f;">&lt;-</span> read.table(path, sep=<span style="color: #718c00;">","</span>, header=<span style="color: #bb9200;">FALSE</span>, skip=1)
+  df <span style="color: #f5871f;">&lt;-</span> rbind(df, aux)
+  }
+names(df)<span style="color: #f5871f;">&lt;-</span> c(<span style="color: #718c00;">'id'</span>, <span style="color: #718c00;">'tiempo'</span>, <span style="color: #718c00;">'cenit'</span>, <span style="color: #718c00;">'acimut'</span>, <span style="color: #718c00;">'declinacion'</span>, <span style="color: #718c00;">'d'</span>, <span style="color: #718c00;">'p1'</span>, <span style="color: #718c00;">'p2'</span>, <span style="color: #718c00;">'p3'</span>, <span style="color: #718c00;">'r'</span>, <span style="color: #718c00;">'tsolar'</span>)
+time <span style="color: #f5871f;">&lt;-</span> strptime(df$tiempo, <span style="color: #718c00;">"%Y-%m-%d %H:%M:%S"</span>)
+df$tiempo <span style="color: #f5871f;">&lt;-</span> time
+head(df)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">tapply(df$p1, df$tiempo$yday, mean)
+</pre>
+</div>
+
+<pre class="example">
+logical(0)
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-R">sapply( split(df$p1, df$tiempo$yday), mean) 
+</pre>
+</div>
+
+<pre class="example">
+named list()
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org925d8e9" class="outline-2">
+<h2 id="org925d8e9"><span class="section-number-2">3.</span> Generación de numeros aleatorios</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Funciones de distribución de probabilidad en R
+</p>
+
+<ul class="org-ul">
+<li><code>rnorm</code>, genera aleatorios con una distribución normal, con una media y una desviación estándar</li>
+<li><code>dnorm</code>, evalua la densidad de probabilidad Normal (con una media/SD) en un punto (o vector)</li>
+<li><code>pnorm</code>, evalua la distribución acumulada de una distribución normal</li>
+<li><code>rpois</code>, genera numeros aleatorios con una distribución Poisson</li>
+</ul>
+
+
+<p>
+Trabajando con una distribución Normal
+</p>
+
+<ul class="org-ul">
+<li><code>d</code> para densidad</li>
+<li><code>r</code> para generación de numeros aleatorios</li>
+<li><code>p</code> para distribución acumulada</li>
+<li><code>q</code> para cuartiles</li>
+</ul>
+
+
+<ul class="org-ul">
+<li>dnorm(x, mean = 0, sd = 1, log =FALSE)</li>
+<li>pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)</li>
+<li>qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)</li>
+<li>rnorm(n, mean = 0, sd = 1, log =FALSE)</li>
+</ul>
+
+<p>
+Sí \(\Phi\) es la función de distribución acumulada para una distribución Normal, entonces \(pnorm(q)=\Phi(q)\) y \(qnorm(p)=\Phi^{-1}(p)\)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">rnorm(25)
+</pre>
+</div>
+
+<pre class="example">
+ [1]  1.0406435  0.1934506  0.5367242  0.5575196 -0.7719396 -0.2659098  1.5615794  1.2596679 -1.6420339  0.8348593
+[11] -0.8034669  0.2796987 -0.9088317  1.2431183  0.8743508  0.3403212  0.1133772 -0.8477722  0.5012238 -0.7928580
+[21] -1.6377863  0.9482415  1.2998873 -0.3810212  0.2328966
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org88f45bb" class="outline-2">
+<h2 id="org88f45bb"><span class="section-number-2">4.</span> runif</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> runif(1000)
+plot(data)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> runif(100000)
+hist(data)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> runif(100000)
+ddata <span style="color: #f5871f;">&lt;-</span> density(data)
+plot(ddata)
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org6f09eb0" class="outline-2">
+<h2 id="org6f09eb0"><span class="section-number-2">5.</span> rnorm</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> rnorm(10000)
+plot(data)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> rnorm(100000)
+hist(data)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> rnorm(100000)
+ddata <span style="color: #f5871f;">&lt;-</span> density(data)
+plot(ddata)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> rnorm(10000)
+cdf <span style="color: #f5871f;">&lt;-</span> ecdf(data)
+plot(cdf)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0a5ccf9" class="outline-2">
+<h2 id="org0a5ccf9"><span class="section-number-2">6.</span> Ploting</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Las gráficas en R son encapsuladas en la base y en algunos paquetes recomendados
+</p>
+
+<ul class="org-ul">
+<li>graphics</li>
+<li>lattice</li>
+<li>ggplot</li>
+<li>grid</li>
+<li>grDevice</li>
+</ul>
+
+
+<p>
+La función <code>par</code> es usada para especificar parametros globales de la gráfica que afectan todos los plots en la sesión de R.
+</p>
+
+<ul class="org-ul">
+<li><code>pch</code>: el simbolo de las gráficas (un circulo abierto por default)</li>
+<li><code>lty</code>: el tipo de linea</li>
+<li><code>lwd</code>: el ancho de linea</li>
+<li><code>col</code>: color de línea</li>
+<li><code>las</code>: la orientación de los ejes</li>
+</ul>
+</div>
+
+
+<div id="outline-container-org24e9d2e" class="outline-3">
+<h3 id="org24e9d2e"><span class="section-number-3">6.1.</span> R</h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+<pre class="src src-R">file = <span style="color: #718c00;">"./data/hw1_data.csv"</span>
+df <span style="color: #f5871f;">&lt;-</span> read.table(file, sep=<span style="color: #718c00;">','</span>, header=<span style="color: #bb9200;">TRUE</span>)
+head(df)
+</pre>
+</div>
+
+<pre class="example">
+  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-R">dfw <span style="color: #f5871f;">&lt;-</span> df[df$Month ==5,]
+plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'p'</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">dfw <span style="color: #f5871f;">&lt;-</span> df[df$Month ==5,]
+png(<span style="color: #718c00;">"./fig/plot01.png"</span>) <span style="color: #8e908c;">### </span><span style="color: #8e908c;">pdf, bmp</span>
+plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'l'</span>)
+dev.off()
+</pre>
+</div>
+
+<pre class="example">
+png 
+  3
+</pre>
+
+
+
+
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #f5871f;">par</span>(mfrow=c(4,1))
+dfw <span style="color: #f5871f;">&lt;-</span> df[df$Month ==5,]
+plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'l'</span>)
+plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'p'</span>, pch=2)
+plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'l'</span>, lty=2)
+plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'l'</span>, col= 2)
+<span style="color: #f5871f;">par</span>(mfrow=c(1,1))
+</pre>
+</div>
+
+
+<div id="org3647804" class="figure">
+<p><img src="./fig/plot.png" alt="plot.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfaea538" class="outline-2">
+<h2 id="orgfaea538"><span class="section-number-2">7.</span> Lattice</h2>
+<div class="outline-text-2" id="text-7">
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #f5871f;">library</span>(lattice)
+data(environmental)
+df <span style="color: #f5871f;">&lt;-</span> environmental
+head(df)
+</pre>
+</div>
+
+<pre class="example">
+  ozone radiation temperature wind
+1    41       190          67  7.4
+2    36       118          72  8.0
+3    12       149          74 12.6
+4    18       313          62 11.5
+5    23       299          65  8.6
+6    19        99          59 13.8
+</pre>
+</div>
+
+<div id="outline-container-orgb2316be" class="outline-3">
+<h3 id="orgb2316be"><span class="section-number-3">7.1.</span> xyplot</h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+<pre class="src src-R">xyplot(ozone ~ radiation, data=df, main=<span style="color: #718c00;">"Ozone vs. Radiation"</span>)
+</pre>
+</div>
+
+
+<div id="org79da17c" class="figure">
+<p><img src="./fig/xyplot.png" alt="xyplot.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">temp.cut <span style="color: #f5871f;">&lt;-</span> equal.count(df$temperature, 4)
+xyplot(ozone ~ radiation | temp.cut, data=df)
+</pre>
+</div>
+
+
+<div id="org3e2b240" class="figure">
+<p><img src="./fig/xyplot2.png" alt="xyplot2.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">xyplot(ozone ~ radiation | temp.cut, data=df, layout=c(1,4))
+</pre>
+</div>
+
+
+<div id="org4be85af" class="figure">
+<p><img src="./fig/xyplot3.png" alt="xyplot3.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4b4e0e5" class="outline-3">
+<h3 id="org4b4e0e5"><span class="section-number-3">7.2.</span> Panel</h3>
+<div class="outline-text-3" id="text-7-2">
+<div class="org-src-container">
+<pre class="src src-R">xyplot(ozone ~ radiation | temp.cut, data=df,
+       panel = <span style="color: #8959a8;">function</span>(x,y, ...){
+         panel.xyplot(x,y,...)
+         fit <span style="color: #f5871f;">&lt;-</span> lm(y~x)
+         panel.abline(fit)
+       }, xlab = <span style="color: #718c00;">"Solar Radiation"</span>, ylab=<span style="color: #718c00;">"Ozone(ppb)"</span>,
+       main = <span style="color: #718c00;">"Ozone Vs. Solar Radiation"</span>)
+</pre>
+</div>
+
+
+<div id="org7fa6016" class="figure">
+<p><img src="./fig/xyplotPanel.png" alt="xyplotPanel.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org149c07e" class="outline-3">
+<h3 id="org149c07e"><span class="section-number-3">7.3.</span> splom</h3>
+<div class="outline-text-3" id="text-7-3">
+<div class="org-src-container">
+<pre class="src src-R">splom(~df)
+</pre>
+</div>
+
+
+<div id="org0828bed" class="figure">
+<p><img src="./fig/splom.png" alt="splom.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org89d2cf1" class="outline-3">
+<h3 id="org89d2cf1"><span class="section-number-3">7.4.</span> histogram</h3>
+<div class="outline-text-3" id="text-7-4">
+<div class="org-src-container">
+<pre class="src src-R">histogram(~temperature, data=df)
+</pre>
+</div>
+
+
+<div id="org881d05e" class="figure">
+<p><img src="./fig/histogram.png" alt="histogram.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">wind.cut <span style="color: #f5871f;">&lt;-</span> equal.count(df$wind,4)
+
+histogram(~ozone | wind.cut, data=df)
+</pre>
+</div>
+
+
+<div id="org66fc60b" class="figure">
+<p><img src="./fig/histogram2.png" alt="histogram2.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1075f06" class="outline-2">
+<h2 id="org1075f06"><span class="section-number-2">8.</span> ggplot2</h2>
+<div class="outline-text-2" id="text-8">
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #f5871f;">library</span>(ggplot2)
+df <span style="color: #f5871f;">&lt;-</span> data.frame(mpg)
+head(df)
+</pre>
+</div>
+
+<pre class="example">
+  manufacturer model displ year cyl      trans drv cty hwy fl   class
+1         audi    a4   1.8 1999   4   auto(l5)   f  18  29  p compact
+2         audi    a4   1.8 1999   4 manual(m5)   f  21  29  p compact
+3         audi    a4   2.0 2008   4 manual(m6)   f  20  31  p compact
+4         audi    a4   2.0 2008   4   auto(av)   f  21  30  p compact
+5         audi    a4   2.8 1999   6   auto(l5)   f  16  26  p compact
+6         audi    a4   2.8 1999   6 manual(m5)   f  18  26  p compact
+</pre>
+</div>
+
+<div id="outline-container-org4b5b43d" class="outline-3">
+<h3 id="org4b5b43d"><span class="section-number-3">8.1.</span> qplot</h3>
+<div class="outline-text-3" id="text-8-1">
+<div class="org-src-container">
+<pre class="src src-R">qplot(displ, hwy, data=mpg)
+</pre>
+</div>
+
+
+<div id="org47f550d" class="figure">
+<p><img src="./fig/qplot.png" alt="qplot.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">qplot(displ, hwy, data=mpg, color=drv)
+</pre>
+</div>
+
+
+<div id="orga73644c" class="figure">
+<p><img src="./fig/qplot2.png" alt="qplot2.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">qplot(displ, hwy, data=mpg, geom=c(<span style="color: #718c00;">"point"</span>, <span style="color: #718c00;">"smooth"</span>))
+</pre>
+</div>
+
+
+<div id="orgd10ca79" class="figure">
+<p><img src="./fig/qplot3.png" alt="qplot3.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">qplot(hwy, data=mpg, fill=drv)
+</pre>
+</div>
+
+
+<div id="orga57d526" class="figure">
+<p><img src="./fig/qplot4.png" alt="qplot4.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">qplot(displ, hwy, data=mpg, facets=.~drv)
+</pre>
+</div>
+
+
+<div id="org6416489" class="figure">
+<p><img src="./fig/qplot5.png" alt="qplot5.png" />
+</p>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-R">qplot(hwy, data=mpg, facets=drv~., binwidth=2)
+</pre>
+</div>
+
+
+<div id="org8fc7719" class="figure">
+<p><img src="./fig/qplot6.png" alt="qplot6.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org602c7af" class="outline-3">
+<h3 id="org602c7af"><span class="section-number-3">8.2.</span> ggplot</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+2 -8 Plotting with ggplot2
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #f5871f;">library</span>(ggplot2)
+df <span style="color: #f5871f;">&lt;-</span> data.frame(mpg)
+head(df)
+</pre>
+</div>
+
+<pre class="example">
+  manufacturer model displ year cyl      trans drv cty hwy fl   class
+1         audi    a4   1.8 1999   4   auto(l5)   f  18  29  p compact
+2         audi    a4   1.8 1999   4 manual(m5)   f  21  29  p compact
+3         audi    a4   2.0 2008   4 manual(m6)   f  20  31  p compact
+4         audi    a4   2.0 2008   4   auto(av)   f  21  30  p compact
+5         audi    a4   2.8 1999   6   auto(l5)   f  16  26  p compact
+6         audi    a4   2.8 1999   6 manual(m5)   f  18  26  p compact
+</pre>
+
+
+
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point()
+</pre>
+</div>
+
+
+<div id="orgc4fc3fc" class="figure">
+<p><img src="./fig/ggplot.png" alt="ggplot.png" />
+</p>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point() + geom_smooth()
+</pre>
+</div>
+
+
+<div id="org711ae01" class="figure">
+<p><img src="./fig/ggplot2.png" alt="ggplot2.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point() + geom_smooth(method=<span style="color: #718c00;">"lm"</span>)
+</pre>
+</div>
+
+
+<div id="orgfaf52b7" class="figure">
+<p><img src="./fig/ggplot3.png" alt="ggplot3.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point() + facet_grid(.~drv) + geom_smooth(method= <span style="color: #718c00;">"lm"</span>)
+</pre>
+</div>
+
+
+<div id="org40d2645" class="figure">
+<p><img src="./fig/ggplot4.png" alt="ggplot4.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc4c189a" class="outline-3">
+<h3 id="orgc4c189a"><span class="section-number-3">8.3.</span> Modificaciones est'eticas</h3>
+<div class="outline-text-3" id="text-8-3">
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point(color=<span style="color: #718c00;">"steelblue"</span>, size=4, alpha=1/2)
+</pre>
+</div>
+
+
+<div id="orgaca9912" class="figure">
+<p><img src="./fig/ggplot5.png" alt="ggplot5.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point( aes(color= drv), size=4, alpha=1/2)
+</pre>
+</div>
+
+
+<div id="org8374b36" class="figure">
+<p><img src="./fig/ggplot6.png" alt="ggplot6.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4e17268" class="outline-3">
+<h3 id="org4e17268"><span class="section-number-3">8.4.</span> Labels</h3>
+<div class="outline-text-3" id="text-8-4">
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
+g + geom_point( aes(color= drv), size=4, alpha=1/2) +
+  labs(title=<span style="color: #718c00;">"My Title"</span>) + labs(x=<span style="color: #718c00;">"x label"</span>, y = <span style="color: #718c00;">"y label"</span>)
+</pre>
+</div>
+
+
+<div id="org4fc0586" class="figure">
+<p><img src="./fig/ggplot7.png" alt="ggplot7.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd9becce" class="outline-3">
+<h3 id="orgd9becce"><span class="section-number-3">8.5.</span> Notas sobre los limites</h3>
+<div class="outline-text-3" id="text-8-5">
+<div class="org-src-container">
+<pre class="src src-R">testdat <span style="color: #f5871f;">&lt;-</span> data.frame(x=1:100, y=rnorm(100))
+testdat[50, 2] <span style="color: #f5871f;">&lt;-</span> 100 <span style="color: #8e908c;">## </span><span style="color: #8e908c;">outlier</span>
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #f5871f;">par</span>( mfrow=c(1,2))
+plot(testdat$x, testdat$y, type=<span style="color: #718c00;">'l'</span>)
+plot(testdat$x, testdat$y, type=<span style="color: #718c00;">'l'</span>, ylim=c(-3,3))
+<span style="color: #f5871f;">par</span>(mfrow=c(1,1))
+</pre>
+</div>
+
+
+<div id="org270fc67" class="figure">
+<p><img src="./fig/ggplotLimits.png" alt="ggplotLimits.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(testdat, aes(x=x, y=y))
+g + geom_line()
+<span style="color: #8e908c;">#</span><span style="color: #8e908c;">g + geom_line() + ylim(-3,3)</span>
+</pre>
+</div>
+
+
+<div id="orgb6b36d5" class="figure">
+<p><img src="./fig/ggplotLimits2.png" alt="ggplotLimits2.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(testdat, aes(x=x, y=y))
+g + geom_line() + ylim(-3,3)
+</pre>
+</div>
+
+
+<div id="orgf8226da" class="figure">
+<p><img src="./fig/ggplotLimits3.png" alt="ggplotLimits3.png" />
+</p>
+</div>
+<div class="org-src-container">
+<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(testdat, aes(x=x, y=y))
+g + geom_line() + coord_cartesian(ylim=c(-3,3))
+</pre>
+</div>
+
+
+<div id="org214550d" class="figure">
+<p><img src="./fig/ggplotLimits4.png" alt="ggplotLimits4.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 09-10-2024</p>
+<p class="author">Author: Dr. Isaías Moreno Cruz</p>
+<p class="date">Created: 2024-10-09 Wed 09:08</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
