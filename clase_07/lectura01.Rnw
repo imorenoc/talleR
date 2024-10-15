@@ -1,0 +1,47 @@
+\section{Leer y escribir datos}
+\label{sec:datos}
+
+
+\subsection{Leer una gran base de datos con read.table}
+
+Con una base de datos grande, hacer lo siguiente te hará la vida más fácil y previene que R detenga.
+\begin{itemize}
+ \item Lee la pagina de ayuda de \verb=read.table=, la cual contiene muchos consejos.
+ \item Haz un calculo aproximado de la memoria que requiere almacenar tu base de datos. Si el conjunto de datos es más grande que la cantidad de memoria RAM en tu computadora , probablemente debes detenerte.
+ \item Utiliza \verb=comment.char=" si no hay lineas de comentarios en el archivo.
+ \item Usa el argumento \verb=colClasses=. Especifica esta opción en lugar de usar la de pordefecto puede hacer \verb=read.table= mucho más rápido, frecuentemente hasta dos veces más rapido. Si todas las columnas son \verb=numeric=, entonces puedes usar \verb$colClasses="numeric"$.
+ \item \verb=nrows=. Esta no hace a R más rápida pero ayuda con el uso de la memoria. Puedes usar el comando de Unix \verb=wc= para calcular el numero de lineas en el archivo. 
+\end{itemize}
+
+
+Una rápida forma, aunque poco elegante, de conocer la clase de cada columna es la siguiente:
+\begin{verbatim}
+initial <- read.table("data.txt", nrows=100)
+classes <- sapply(initial, class)
+tabAll <- read.table("data.txt", colClasses= classes)
+\end{verbatim}
+
+  <<echo=FALSE>>=
+  library(lattice)
+  data(environmental)
+  df <- environmental
+  @
+
+<<echo=TRUE, results='asis'>>=
+  library(xtable)
+  xtable(head(df))
+  @
+
+
+
+\subsection{Figure}
+\label{subsec:fig}
+
+  
+  \begin{figure}[h!]
+  \centering
+ <<my-label, echo=FALSE, fig.width=5, fig.height=5>>=
+  histogram(~temperature, data=df)
+ @
+  \caption{\label{fig:Dname} Descripción.}
+\end{figure}

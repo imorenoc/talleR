@@ -1,0 +1,80 @@
+\documentclass[spanish, letterpaper,12]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{eurosym}
+\usepackage[numbers]{natbib}
+\usepackage{enumitem}
+
+\usepackage[activeacute]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\spanishdecimal{.}
+
+\DeclareGraphicsExtensions{.pdf, .png}
+\graphicspath{{./fig/}}
+
+\title{Curso Básico de R}
+\author{Dr. Isaías Moreno Cruz}
+\date{\today}
+
+%----------------------------------------------------------------------
+\begin{document}                                                      
+\SweaveOpts{concordance=TRUE}
+%----------------------------------------------------------------------
+\renewcommand{\tablename}{Tabla}
+
+\maketitle
+
+\section{Install R packages}
+
+
+knitr
+xtable
+
+
+\section{Introducción}
+\label{sec:intro}
+
+
+\subsection{Operaciones vectorizadas}
+\label{subsec:operaciones_vectorizadas}
+
+Muchas operaciones en R son vectorizadas, haciendo el código más eficiente, conciso, y fácil de leer.
+
+<<>>=
+x <- 1:4; y <- 6:9
+x+y
+@
+
+
+<<>>=
+x > 2
+@ 
+
+<<>>=
+x/y
+@ 
+
+El valor de y[1]=\Sexpr{y[1]}.
+
+
+
+\subsection{Operaciones con matrices}
+
+<<>>=
+x <- matrix(1:4,2,2); y <- matrix(rep(10,4),2,2)
+x %*% y # multiplicaciones de matrices
+@ 
+
+
+<<child-01, child='lectura01.Rnw'>>=
+@
+
+
+%----------------------------------------------------------------------
+\end{document}
+%----------------------------------------------------------------------

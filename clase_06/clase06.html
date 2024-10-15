@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-10-09 Wed 09:08 -->
+<!-- 2024-10-11 Fri 09:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Taller de R. Clase 06</title>
@@ -233,31 +233,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4bbd3aa">1. Ejercicio</a></li>
-<li><a href="#org0b39f24">2. Ejercicio II</a></li>
-<li><a href="#org925d8e9">3. Generación de numeros aleatorios</a></li>
-<li><a href="#org88f45bb">4. runif</a></li>
-<li><a href="#org6f09eb0">5. rnorm</a></li>
-<li><a href="#org0a5ccf9">6. Ploting</a>
+<li><a href="#orgb98b7e7">1. Ejercicio</a></li>
+<li><a href="#orgd711a65">2. Ejercicio II</a></li>
+<li><a href="#org1d5bb48">3. Generación de numeros aleatorios</a></li>
+<li><a href="#orge64f6c3">4. runif</a></li>
+<li><a href="#orgbcff8b1">5. rnorm</a></li>
+<li><a href="#org9d55281">6. Ploting</a>
 <ul>
-<li><a href="#org24e9d2e">6.1. R</a></li>
-</ul>
-</li>
-<li><a href="#orgfaea538">7. Lattice</a>
-<ul>
-<li><a href="#orgb2316be">7.1. xyplot</a></li>
-<li><a href="#org4b4e0e5">7.2. Panel</a></li>
-<li><a href="#org149c07e">7.3. splom</a></li>
-<li><a href="#org89d2cf1">7.4. histogram</a></li>
-</ul>
-</li>
-<li><a href="#org1075f06">8. ggplot2</a>
-<ul>
-<li><a href="#org4b5b43d">8.1. qplot</a></li>
-<li><a href="#org602c7af">8.2. ggplot</a></li>
-<li><a href="#orgc4c189a">8.3. Modificaciones est'eticas</a></li>
-<li><a href="#org4e17268">8.4. Labels</a></li>
-<li><a href="#orgd9becce">8.5. Notas sobre los limites</a></li>
+<li><a href="#org24fb41f">6.1. R</a></li>
 </ul>
 </li>
 </ul>
@@ -265,8 +248,8 @@
 </div>
 
 
-<div id="outline-container-org4bbd3aa" class="outline-2">
-<h2 id="org4bbd3aa"><span class="section-number-2">1.</span> Ejercicio</h2>
+<div id="outline-container-orgb98b7e7" class="outline-2">
+<h2 id="orgb98b7e7"><span class="section-number-2">1.</span> Ejercicio</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Leer los datos en distintos archivos de dbeta y guardarlos a una lista
@@ -310,8 +293,8 @@ Obtener la distancia primedio entre
 </div>
 </div>
 
-<div id="outline-container-org0b39f24" class="outline-2">
-<h2 id="org0b39f24"><span class="section-number-2">2.</span> Ejercicio II</h2>
+<div id="outline-container-orgd711a65" class="outline-2">
+<h2 id="orgd711a65"><span class="section-number-2">2.</span> Ejercicio II</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Leer los archivos en <code>dbeta</code> y concatenarlos en un único archivo
@@ -340,7 +323,8 @@ head(df)
 </div>
 
 <pre class="example">
-logical(0)
+      172       215       233       249       264       279       294       313       355 
+0.1094235 0.1216368 0.1333419 0.1402298 0.1454683 0.1882011 0.1896050 0.1910719 0.1923433
 </pre>
 
 
@@ -350,14 +334,15 @@ logical(0)
 </div>
 
 <pre class="example">
-named list()
+      172       215       233       249       264       279       294       313       355 
+0.1094235 0.1216368 0.1333419 0.1402298 0.1454683 0.1882011 0.1896050 0.1910719 0.1923433
 </pre>
 </div>
 </div>
 
 
-<div id="outline-container-org925d8e9" class="outline-2">
-<h2 id="org925d8e9"><span class="section-number-2">3.</span> Generación de numeros aleatorios</h2>
+<div id="outline-container-org1d5bb48" class="outline-2">
+<h2 id="org1d5bb48"><span class="section-number-2">3.</span> Generación de numeros aleatorios</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Funciones de distribución de probabilidad en R
@@ -400,15 +385,15 @@ Sí \(\Phi\) es la función de distribución acumulada para una distribución No
 </div>
 
 <pre class="example">
- [1]  1.0406435  0.1934506  0.5367242  0.5575196 -0.7719396 -0.2659098  1.5615794  1.2596679 -1.6420339  0.8348593
-[11] -0.8034669  0.2796987 -0.9088317  1.2431183  0.8743508  0.3403212  0.1133772 -0.8477722  0.5012238 -0.7928580
-[21] -1.6377863  0.9482415  1.2998873 -0.3810212  0.2328966
+ [1]  0.89516600 -0.84809421  0.82869256 -0.51490090 -0.64110573 -1.22145019  0.75481489 -1.58112195 -1.67005378
+[10] -0.95802270  0.40064999  0.69158733  0.30409533  0.87905031  1.14840179 -0.80057839 -0.79877928 -2.60557121
+[19] -0.22955353  0.46150111  1.04060778 -1.38203785  0.18978201  0.07486468  0.42639574
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org88f45bb" class="outline-2">
-<h2 id="org88f45bb"><span class="section-number-2">4.</span> runif</h2>
+<div id="outline-container-orge64f6c3" class="outline-2">
+<h2 id="orge64f6c3"><span class="section-number-2">4.</span> runif</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 <pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> runif(1000)
@@ -433,9 +418,20 @@ plot(ddata)
 
 
 
-<div id="outline-container-org6f09eb0" class="outline-2">
-<h2 id="org6f09eb0"><span class="section-number-2">5.</span> rnorm</h2>
+<div id="outline-container-orgbcff8b1" class="outline-2">
+<h2 id="orgbcff8b1"><span class="section-number-2">5.</span> rnorm</h2>
 <div class="outline-text-2" id="text-5">
+<p>
+La regla 68-95-99.7 establece que el 68% de los valores de una distribución normal se sitúan dentro de una desviación típica de la media, mientras que el 95% y el 99.7% de los valores se sitúan dentro de dos y tres desviaciones típicas, respectivamente.
+</p>
+
+
+<div id="orgcb47030" class="figure">
+<p><img src="./fig/normal.png" alt="normal.png" />
+</p>
+</div>
+
+
 <div class="org-src-container">
 <pre class="src src-R">data <span style="color: #f5871f;">&lt;-</span> rnorm(10000)
 plot(data)
@@ -465,8 +461,8 @@ plot(cdf)
 </div>
 
 
-<div id="outline-container-org0a5ccf9" class="outline-2">
-<h2 id="org0a5ccf9"><span class="section-number-2">6.</span> Ploting</h2>
+<div id="outline-container-org9d55281" class="outline-2">
+<h2 id="org9d55281"><span class="section-number-2">6.</span> Ploting</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Las gráficas en R son encapsuladas en la base y en algunos paquetes recomendados
@@ -495,8 +491,8 @@ La función <code>par</code> es usada para especificar parametros globales de la
 </div>
 
 
-<div id="outline-container-org24e9d2e" class="outline-3">
-<h3 id="org24e9d2e"><span class="section-number-3">6.1.</span> R</h3>
+<div id="outline-container-org24fb41f" class="outline-3">
+<h3 id="org24fb41f"><span class="section-number-3">6.1.</span> R</h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 <pre class="src src-R">file = <span style="color: #718c00;">"./data/hw1_data.csv"</span>
@@ -531,8 +527,8 @@ dev.off()
 </div>
 
 <pre class="example">
-png 
-  3
+X11cairo 
+       2
 </pre>
 
 
@@ -550,404 +546,8 @@ plot(dfw$Day, dfw$Temp, type=<span style="color: #718c00;">'l'</span>, col= 2)
 </div>
 
 
-<div id="org3647804" class="figure">
+<div id="orgb6bdd24" class="figure">
 <p><img src="./fig/plot.png" alt="plot.png" />
-</p>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgfaea538" class="outline-2">
-<h2 id="orgfaea538"><span class="section-number-2">7.</span> Lattice</h2>
-<div class="outline-text-2" id="text-7">
-<div class="org-src-container">
-<pre class="src src-R"><span style="color: #f5871f;">library</span>(lattice)
-data(environmental)
-df <span style="color: #f5871f;">&lt;-</span> environmental
-head(df)
-</pre>
-</div>
-
-<pre class="example">
-  ozone radiation temperature wind
-1    41       190          67  7.4
-2    36       118          72  8.0
-3    12       149          74 12.6
-4    18       313          62 11.5
-5    23       299          65  8.6
-6    19        99          59 13.8
-</pre>
-</div>
-
-<div id="outline-container-orgb2316be" class="outline-3">
-<h3 id="orgb2316be"><span class="section-number-3">7.1.</span> xyplot</h3>
-<div class="outline-text-3" id="text-7-1">
-<div class="org-src-container">
-<pre class="src src-R">xyplot(ozone ~ radiation, data=df, main=<span style="color: #718c00;">"Ozone vs. Radiation"</span>)
-</pre>
-</div>
-
-
-<div id="org79da17c" class="figure">
-<p><img src="./fig/xyplot.png" alt="xyplot.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">temp.cut <span style="color: #f5871f;">&lt;-</span> equal.count(df$temperature, 4)
-xyplot(ozone ~ radiation | temp.cut, data=df)
-</pre>
-</div>
-
-
-<div id="org3e2b240" class="figure">
-<p><img src="./fig/xyplot2.png" alt="xyplot2.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">xyplot(ozone ~ radiation | temp.cut, data=df, layout=c(1,4))
-</pre>
-</div>
-
-
-<div id="org4be85af" class="figure">
-<p><img src="./fig/xyplot3.png" alt="xyplot3.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org4b4e0e5" class="outline-3">
-<h3 id="org4b4e0e5"><span class="section-number-3">7.2.</span> Panel</h3>
-<div class="outline-text-3" id="text-7-2">
-<div class="org-src-container">
-<pre class="src src-R">xyplot(ozone ~ radiation | temp.cut, data=df,
-       panel = <span style="color: #8959a8;">function</span>(x,y, ...){
-         panel.xyplot(x,y,...)
-         fit <span style="color: #f5871f;">&lt;-</span> lm(y~x)
-         panel.abline(fit)
-       }, xlab = <span style="color: #718c00;">"Solar Radiation"</span>, ylab=<span style="color: #718c00;">"Ozone(ppb)"</span>,
-       main = <span style="color: #718c00;">"Ozone Vs. Solar Radiation"</span>)
-</pre>
-</div>
-
-
-<div id="org7fa6016" class="figure">
-<p><img src="./fig/xyplotPanel.png" alt="xyplotPanel.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org149c07e" class="outline-3">
-<h3 id="org149c07e"><span class="section-number-3">7.3.</span> splom</h3>
-<div class="outline-text-3" id="text-7-3">
-<div class="org-src-container">
-<pre class="src src-R">splom(~df)
-</pre>
-</div>
-
-
-<div id="org0828bed" class="figure">
-<p><img src="./fig/splom.png" alt="splom.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org89d2cf1" class="outline-3">
-<h3 id="org89d2cf1"><span class="section-number-3">7.4.</span> histogram</h3>
-<div class="outline-text-3" id="text-7-4">
-<div class="org-src-container">
-<pre class="src src-R">histogram(~temperature, data=df)
-</pre>
-</div>
-
-
-<div id="org881d05e" class="figure">
-<p><img src="./fig/histogram.png" alt="histogram.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">wind.cut <span style="color: #f5871f;">&lt;-</span> equal.count(df$wind,4)
-
-histogram(~ozone | wind.cut, data=df)
-</pre>
-</div>
-
-
-<div id="org66fc60b" class="figure">
-<p><img src="./fig/histogram2.png" alt="histogram2.png" />
-</p>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org1075f06" class="outline-2">
-<h2 id="org1075f06"><span class="section-number-2">8.</span> ggplot2</h2>
-<div class="outline-text-2" id="text-8">
-<div class="org-src-container">
-<pre class="src src-R"><span style="color: #f5871f;">library</span>(ggplot2)
-df <span style="color: #f5871f;">&lt;-</span> data.frame(mpg)
-head(df)
-</pre>
-</div>
-
-<pre class="example">
-  manufacturer model displ year cyl      trans drv cty hwy fl   class
-1         audi    a4   1.8 1999   4   auto(l5)   f  18  29  p compact
-2         audi    a4   1.8 1999   4 manual(m5)   f  21  29  p compact
-3         audi    a4   2.0 2008   4 manual(m6)   f  20  31  p compact
-4         audi    a4   2.0 2008   4   auto(av)   f  21  30  p compact
-5         audi    a4   2.8 1999   6   auto(l5)   f  16  26  p compact
-6         audi    a4   2.8 1999   6 manual(m5)   f  18  26  p compact
-</pre>
-</div>
-
-<div id="outline-container-org4b5b43d" class="outline-3">
-<h3 id="org4b5b43d"><span class="section-number-3">8.1.</span> qplot</h3>
-<div class="outline-text-3" id="text-8-1">
-<div class="org-src-container">
-<pre class="src src-R">qplot(displ, hwy, data=mpg)
-</pre>
-</div>
-
-
-<div id="org47f550d" class="figure">
-<p><img src="./fig/qplot.png" alt="qplot.png" />
-</p>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-R">qplot(displ, hwy, data=mpg, color=drv)
-</pre>
-</div>
-
-
-<div id="orga73644c" class="figure">
-<p><img src="./fig/qplot2.png" alt="qplot2.png" />
-</p>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-R">qplot(displ, hwy, data=mpg, geom=c(<span style="color: #718c00;">"point"</span>, <span style="color: #718c00;">"smooth"</span>))
-</pre>
-</div>
-
-
-<div id="orgd10ca79" class="figure">
-<p><img src="./fig/qplot3.png" alt="qplot3.png" />
-</p>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-R">qplot(hwy, data=mpg, fill=drv)
-</pre>
-</div>
-
-
-<div id="orga57d526" class="figure">
-<p><img src="./fig/qplot4.png" alt="qplot4.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">qplot(displ, hwy, data=mpg, facets=.~drv)
-</pre>
-</div>
-
-
-<div id="org6416489" class="figure">
-<p><img src="./fig/qplot5.png" alt="qplot5.png" />
-</p>
-</div>
-
-
-<div class="org-src-container">
-<pre class="src src-R">qplot(hwy, data=mpg, facets=drv~., binwidth=2)
-</pre>
-</div>
-
-
-<div id="org8fc7719" class="figure">
-<p><img src="./fig/qplot6.png" alt="qplot6.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org602c7af" class="outline-3">
-<h3 id="org602c7af"><span class="section-number-3">8.2.</span> ggplot</h3>
-<div class="outline-text-3" id="text-8-2">
-<p>
-2 -8 Plotting with ggplot2
-</p>
-
-<div class="org-src-container">
-<pre class="src src-R"><span style="color: #f5871f;">library</span>(ggplot2)
-df <span style="color: #f5871f;">&lt;-</span> data.frame(mpg)
-head(df)
-</pre>
-</div>
-
-<pre class="example">
-  manufacturer model displ year cyl      trans drv cty hwy fl   class
-1         audi    a4   1.8 1999   4   auto(l5)   f  18  29  p compact
-2         audi    a4   1.8 1999   4 manual(m5)   f  21  29  p compact
-3         audi    a4   2.0 2008   4 manual(m6)   f  20  31  p compact
-4         audi    a4   2.0 2008   4   auto(av)   f  21  30  p compact
-5         audi    a4   2.8 1999   6   auto(l5)   f  16  26  p compact
-6         audi    a4   2.8 1999   6 manual(m5)   f  18  26  p compact
-</pre>
-
-
-
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point()
-</pre>
-</div>
-
-
-<div id="orgc4fc3fc" class="figure">
-<p><img src="./fig/ggplot.png" alt="ggplot.png" />
-</p>
-</div>
-
-
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point() + geom_smooth()
-</pre>
-</div>
-
-
-<div id="org711ae01" class="figure">
-<p><img src="./fig/ggplot2.png" alt="ggplot2.png" />
-</p>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point() + geom_smooth(method=<span style="color: #718c00;">"lm"</span>)
-</pre>
-</div>
-
-
-<div id="orgfaf52b7" class="figure">
-<p><img src="./fig/ggplot3.png" alt="ggplot3.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point() + facet_grid(.~drv) + geom_smooth(method= <span style="color: #718c00;">"lm"</span>)
-</pre>
-</div>
-
-
-<div id="org40d2645" class="figure">
-<p><img src="./fig/ggplot4.png" alt="ggplot4.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-orgc4c189a" class="outline-3">
-<h3 id="orgc4c189a"><span class="section-number-3">8.3.</span> Modificaciones est'eticas</h3>
-<div class="outline-text-3" id="text-8-3">
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point(color=<span style="color: #718c00;">"steelblue"</span>, size=4, alpha=1/2)
-</pre>
-</div>
-
-
-<div id="orgaca9912" class="figure">
-<p><img src="./fig/ggplot5.png" alt="ggplot5.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point( aes(color= drv), size=4, alpha=1/2)
-</pre>
-</div>
-
-
-<div id="org8374b36" class="figure">
-<p><img src="./fig/ggplot6.png" alt="ggplot6.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org4e17268" class="outline-3">
-<h3 id="org4e17268"><span class="section-number-3">8.4.</span> Labels</h3>
-<div class="outline-text-3" id="text-8-4">
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(df, aes(x=displ, y=hwy))
-g + geom_point( aes(color= drv), size=4, alpha=1/2) +
-  labs(title=<span style="color: #718c00;">"My Title"</span>) + labs(x=<span style="color: #718c00;">"x label"</span>, y = <span style="color: #718c00;">"y label"</span>)
-</pre>
-</div>
-
-
-<div id="org4fc0586" class="figure">
-<p><img src="./fig/ggplot7.png" alt="ggplot7.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-orgd9becce" class="outline-3">
-<h3 id="orgd9becce"><span class="section-number-3">8.5.</span> Notas sobre los limites</h3>
-<div class="outline-text-3" id="text-8-5">
-<div class="org-src-container">
-<pre class="src src-R">testdat <span style="color: #f5871f;">&lt;-</span> data.frame(x=1:100, y=rnorm(100))
-testdat[50, 2] <span style="color: #f5871f;">&lt;-</span> 100 <span style="color: #8e908c;">## </span><span style="color: #8e908c;">outlier</span>
-</pre>
-</div>
-
-
-<div class="org-src-container">
-<pre class="src src-R"><span style="color: #f5871f;">par</span>( mfrow=c(1,2))
-plot(testdat$x, testdat$y, type=<span style="color: #718c00;">'l'</span>)
-plot(testdat$x, testdat$y, type=<span style="color: #718c00;">'l'</span>, ylim=c(-3,3))
-<span style="color: #f5871f;">par</span>(mfrow=c(1,1))
-</pre>
-</div>
-
-
-<div id="org270fc67" class="figure">
-<p><img src="./fig/ggplotLimits.png" alt="ggplotLimits.png" />
-</p>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(testdat, aes(x=x, y=y))
-g + geom_line()
-<span style="color: #8e908c;">#</span><span style="color: #8e908c;">g + geom_line() + ylim(-3,3)</span>
-</pre>
-</div>
-
-
-<div id="orgb6b36d5" class="figure">
-<p><img src="./fig/ggplotLimits2.png" alt="ggplotLimits2.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(testdat, aes(x=x, y=y))
-g + geom_line() + ylim(-3,3)
-</pre>
-</div>
-
-
-<div id="orgf8226da" class="figure">
-<p><img src="./fig/ggplotLimits3.png" alt="ggplotLimits3.png" />
-</p>
-</div>
-<div class="org-src-container">
-<pre class="src src-R">g <span style="color: #f5871f;">&lt;-</span> ggplot(testdat, aes(x=x, y=y))
-g + geom_line() + coord_cartesian(ylim=c(-3,3))
-</pre>
-</div>
-
-
-<div id="org214550d" class="figure">
-<p><img src="./fig/ggplotLimits4.png" alt="ggplotLimits4.png" />
 </p>
 </div>
 </div>
@@ -957,7 +557,7 @@ g + geom_line() + coord_cartesian(ylim=c(-3,3))
 <div id="postamble" class="status">
 <p class="date">Date: 09-10-2024</p>
 <p class="author">Author: Dr. Isaías Moreno Cruz</p>
-<p class="date">Created: 2024-10-09 Wed 09:08</p>
+<p class="date">Created: 2024-10-11 Fri 09:23</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
