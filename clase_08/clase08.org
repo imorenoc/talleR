@@ -1,0 +1,433 @@
+#+title: Taller de R. Clase 08
+#+author: Dr. Isaías Moreno Cruz
+#+email: ismoc@cio.mx
+#+date: 16-10-2024
+#+latex_header: \mode<beamer>{\usetheme{Madrid}}
+
+* Dates and Times in R
+
+R ha desarrollado una representaci'on espacial de datos y tiempo
+
+- Dates es representado por la clase =Date=
+- Times es representado por la clase =POSIXct= o =POSIXlt=.
+- Los Dates son almacenados internamente como un numero de dia desde 1970-01-01
+- Los Times son almacenados internamente como numeros de segundos desde 1970-01-01
+
+#+begin_src R :results output :session curso :exports both
+  x <- as.Date("1970-01-01")
+  x
+  unclass(x)
+  unclass(as.Date("1970-01-02"))
+#+end_src
+
+#+RESULTS:
+: [1] "1970-01-01"
+: [1] 0
+: [1] 1
+
+** Times in R
+
+El tiempo es representado usando la clase =POSIXct= o =POSIXlt=
+
+- =POSIXct= es solo un entero muy largo; es util para almacenar tiempo en un data frame
+- =POSIXlt= es una lista y este almacena un conjunto de otra informaci'on 'util, como el d'ia de la semana, d'ia del a~no, mes y d'ia del mes.
+
+#+begin_src R :results output :session curso :exports both
+    x <- Sys.time()
+    x
+#+end_src
+
+#+RESULTS:
+: [1] "2024-08-14 12:32:28 CST"
+
+
+#+begin_src R :results output :session curso :exports both
+    p <- as.POSIXlt(x)
+    names(unclass(p))
+    p$sec
+#+end_src
+
+#+RESULTS:
+:  [1] "sec"    "min"    "hour"   "mday"   "mon"    "year"   "wday"   "yday"   "isdst"  "zone"   "gmtoff"
+: [1] 28.38549
+
+#+begin_src R :results output :session curso :exports both
+    x <- Sys.time()
+    p <- as.POSIXct(x)
+    unclass(p)
+    p$sec
+    p <- as.POSIXlt(x)
+    p$sec
+#+end_src
+
+#+RESULTS:
+: [1] 1723660925
+: Error in p$sec : $ operator is invalid for atomic vectors
+: [1] 5.147349
+
+** strptime
+
+Hay una funci'on =strptime= en caso de que tus datos sean escritos en formatos diferentes
+
+#+begin_src R :results output :session curso :exports both
+    datestring <- c("January 10, 2012 10:40", "December 9, 2011 9:10")
+    x <- strptime(datestring, "%B %d, %Y %H:%M")
+    x
+    class(x)
+#+end_src
+
+#+RESULTS:
+: [1] "2012-01-10 10:40:00 CST" "2011-12-09 09:10:00 CST"
+: [1] "POSIXlt" "POSIXt"
+
+* Ejercicio
+
+
+#+begin_src R :results output :session curso :exports both
+  rut <- "./data" 
+  files <- list.files(rut)
+  df <- read.table(paste(rut,"/",files[1],sep=""), sep=",", header=FALSE, skip=1)
+  names(df) <- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')
+  #df2 <- read.table(paste(rut,"/",files[2],sep=""), sep=",", header=FALSE, skip=1)
+  #names(df2) <- c('id', 'tiempo', 'cenit', 'acimut', 'declinacion', 'd', 'p1', 'p2', 'p3', 'r', 'tsolar')
+  #df<-rbind(df1, df2)
+  head(df)
+#+end_src
+
+#+RESULTS:
+:     id               tiempo   cenit    acimut declinacion        d      p1 p2      p3      r    tsolar
+: 1 5087  2024-06-21 07:25:34 66.5503 -104.7951     23.4364 114.8646 -0.4847  0 -0.1754 0.5155  06:59:00
+: 2 5087  2024-06-21 07:26:34 66.3393 -104.6980     23.4364 114.8646 -0.4855  0 -0.1792 0.5175  07:00:00
+: 3 5087  2024-06-21 07:31:34 65.2827 -104.2138     23.4363 114.8646 -0.4893  0 -0.1982 0.5279  07:05:00
+: 4 5087  2024-06-21 07:36:34 64.2238 -103.7316     23.4363 114.8646 -0.4928  0 -0.2173 0.5386  07:10:00
+: 5 5087  2024-06-21 07:41:34 63.1626 -103.2510     23.4363 114.8646 -0.4962  0 -0.2367 0.5497  07:15:00
+: 6 5087  2024-06-21 07:46:34 62.0992 -102.7717     23.4363 114.8646 -0.4992  0 -0.2562 0.5611  07:20:00
+
+
+#+begin_src R :results output :session curso :exports both
+  time <- strptime(df$tiempo, "%Y-%m-%d %H:%M:%S")
+  df$tiempo <- time
+#+end_src
+
+#+RESULTS:
+
+
+
+#+begin_src R :results output :session curso :exports both
+  library(lattice)
+  xyplot(p3~p1, df,type="p")
+#+end_src
+
+#+RESULTS:
+
+#+begin_src R :results output :session curso :exports both
+  library(lattice)
+  xyplot(p3~p1 | factor(tiempo$yday), df, type="l", auto.key=TRUE)
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src R :results output :session curso :exports both
+  library(lattice)
+  xyplot(p3~p1 | factor(tiempo$yday), df, groups= factor(tiempo$yday), type="l", auto.key=TRUE)
+#+end_src
+
+#+RESULTS:
+
+
+* Plotting and Color in R
+
+El paquete =grDevices= tiene dos funciones
+
+- colorRamp: 0-1
+- colorRampPalette: enteros
+
+Estas funciones tienen paletas de color y ayudan a interpolar entre los colores.
+La funcui'on =colors()= lista el nombre de colores que puedes usare en cualquier funci'on
+
+** colorRamp
+
+#+begin_src R :results output :session curso :exports both
+  pal <- colorRamp(c("red", "blue"))
+  pal(0)
+  pal(1)
+  pal(0.5)
+#+end_src
+
+#+RESULTS:
+:      [,1] [,2] [,3]
+: [1,]  255    0    0
+:      [,1] [,2] [,3]
+: [1,]    0    0  255
+:       [,1] [,2]  [,3]
+: [1,] 127.5    0 127.5
+
+#+begin_src R :results output :session curso :exports both
+  pal(seq(0,1,len=10))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+           [,1] [,2]      [,3]
+ [1,] 255.00000    0   0.00000
+ [2,] 226.66667    0  28.33333
+ [3,] 198.33333    0  56.66667
+ [4,] 170.00000    0  85.00000
+ [5,] 141.66667    0 113.33333
+ [6,] 113.33333    0 141.66667
+ [7,]  85.00000    0 170.00000
+ [8,]  56.66667    0 198.33333
+ [9,]  28.33333    0 226.66667
+[10,]   0.00000    0 255.00000
+#+end_example
+
+** colorRampPalette
+
+#+begin_src R :results output :session curso :exports both
+  pal <- colorRampPalette(c("red", "yellow"))
+  pal(2)
+  pal(10)
+#+end_src
+
+#+RESULTS:
+: [1] "#FF0000" "#FFFF00"
+:  [1] "#FF0000" "#FF1C00" "#FF3800" "#FF5500" "#FF7100" "#FF8D00" "#FFAA00" "#FFC600" "#FFE200" "#FFFF00"
+
+
+** RColorBrewer Package
+
+Hay tres tipos de paletas
+
+- sequencial
+- divergente
+- cualitativa
+
+[[https://r-graph-gallery.com/38-rcolorbrewers-palettes.html][RColorBrewer]] 
+
+#+begin_src R :results output :session curso :exports both
+  library(RColorBrewer)
+  cols <- brewer.pal(3, "BuGn")
+  cols
+  pal <- colorRampPalette(cols)
+#+end_src
+
+#+RESULTS:
+: [1] "#E5F5F9" "#99D8C9" "#2CA25F"
+
+
+
+#+begin_src R :file ./fig/volcano.png :results file graphics :session curso :exports both
+image(volcano, col=pal(20))
+#+end_src
+
+#+RESULTS:
+[[file:./fig/volcano.png]]
+
+* RColorBrewer and Lattice
+
+#+begin_src R :results output :session curso :exports both
+file<- "./data/H106A21.dat"
+dfDy <- read.csv(file, header=FALSE, sep=",", skip=1)
+names(dfDy)<-c("id", "timeL", "cenit",  "acimut", "declinacion", "d", "p1", "p2", "p3", "r", "time")
+time <- as.POSIXlt(dfDy$timeL, format="%Y-%m-%d %H:%M:%S")
+dfDy$N <- time$yday
+head(dfDy,2)
+#+end_src
+
+#+RESULTS:
+:    id                timeL   cenit    acimut declinacion        d     p1 p2      p3      r      time   N
+: 1 106  2024-06-21 07:25:34 66.5503 -104.7951     23.4364 386.3796 2.2205  0 -0.3300 2.2449  06:59:00 172
+: 2 106  2024-06-21 07:26:34 66.3393 -104.6980     23.4364 386.3796 2.2178  0 -0.3266 2.2418  07:00:00 172
+
+#+begin_src R :results file graphics :file ./fig/latticeextra.png :session curso :exports both
+  library(RColorBrewer)
+  library(lattice)
+  library(latticeExtra)
+
+  mypalette<- custom.theme(symbol = RColorBrewer::brewer.pal(9, "Spectral"),
+	       fill = RColorBrewer::brewer.pal(9, "Spectral"),
+	       region = RColorBrewer::brewer.pal(9, "Blues"),
+	       bg = "transparent", fg = "black", pch = 16)
+
+  xyplot((90-cenit)~acimut, data = dfDy, groups=N, type=c("l", "g"),
+	 auto.key=TRUE,
+	 par.settings=mypalette,
+	 main="Title",
+	 xlab="gamma", ylab="alpha")
+
+#+end_src
+
+#+RESULTS:
+[[file:./fig/latticeextra.png]]
+
+* Regular Expressions
+
+
+- =^= , representa el inicio de linea
+- =$= , representa el fin de linea
+- =[]=, para aceptar un conjunto de caracteres o un rango [a-z] o [a-zA-Z]
+- =.= , usado para referir cualquier caracter
+- =|= , significa 'or'
+- =?= , indica que la expresi'on es opcional
+- =*= , repetici'on. cualquier numero incluyendo espacio
+- =+= , repetici'on. el 'ultimo de los item
+- ={=, =}= , un intervalo cuantificable
+
+* Funciones para expresiones regulares
+
+- =grep=, =grepl=: devuelven los índices de las cadenas que contienen una coincidencia 
+- =regexpr=, =gregexpr=: devuelven los índices de las cadenas que contienen una coincidencia
+- =sub=, =gsub=: devuelven los índices de las cadenas que contienen una coincidencia
+- =regexec=: funciona como regexpr() pero devuelve la misma información también para una subexpresión especificada dentro de la coincidencia.
+- =regmatches()=: funciona como regexec() pero devuelve las cadenas exactas detectadas para la coincidencia global y una subexpresión especificada.
+
+#+begin_src R :results output :session curso :exports both
+  homicides <- readLines("./data/homicides.txt")
+  homicides[1]
+#+end_src
+
+#+RESULTS:
+: [1] "39.311024, -76.674227, iconHomicideShooting, 'p2', '<dl><dt>Leon Nelson</dt><dd class=\"address\">3400 Clifton Ave.<br />Baltimore, MD 21216</dd><dd>black male, 17 years old</dd><dd>Found on January 1, 2007</dd><dd>Victim died at Shock Trauma</dd><dd>Cause: shooting</dd></dl>'"
+
+* grep
+
+Victimas de disparo
+
+#+begin_src R :results output :session curso :exports both
+  grep("iconHomicideShooting", homicides)
+  length(grep("iconHomicideShooting", homicides))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+  [1]   1   2   6   7   8   9  10  11  12  13  14  15  16  18  19  20  21  22  23  24  25  26  28  29  30  31  32
+ [28]  33  34  35  36  37  38  39  40  41  42  44  45  46  47  48  49  50  51  52  53  54  55  56  57  60  61  62
+ [55]  63  64  67  68  69  70  71  72  74  75  77  78  79  80  81  82  84  85  86  87  88  89  90  91  93  94  95
+ [82]  96  97  98  99 100 101 102 103 104 105 106 107 108 109 112 113 114 115 117 119 120 121 123 124 125 126 127
+[109] 129 130 132 133 134 135 136 138 139 140 141 142 143 144 146 147 148 149 151 152 154 155 156 157 158 159 160
+[136] 161 163 169 170 171 172 173 174 175 176 177 178 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194
+[163] 195 196 197 200 201 202 203 204 205 206 207 208 209 210 211 214 215 216 217 219 220 221 222 223 225 229 231
+[190] 232 233 234 235 237 239 241 242 243 244 245 247 248 249 250 251 252 253 254 255 256 257 258 260 261 262 263
+[217] 265 266 269 271 272 273 275 276 277 278 279 280
+[1] 228
+#+end_example
+
+
+#+begin_src R :results output :session curso :exports both
+  length(grep("iconHomicideShooting", homicides))
+  length(grep("iconHomicideShooting|icon_homicide_shooting", homicides))
+  length(grep("Cause: shooting", homicides))
+  length(grep("Cause: [Ss]hooting", homicides))
+  length(grep("[Ss]hooting", homicides))
+#+end_src
+
+#+RESULTS:
+: [1] 228
+: [1] 1003
+: [1] 228
+: [1] 1003
+: [1] 1005
+
+#+begin_src R :results output :session curso :exports both
+  i <- grep("[cC]ause: [Ss]hooting", homicides)
+  j <- grep("[Ss]hooting", homicides)
+  setdiff(i,j)
+  setdiff(j,i)
+#+end_src
+
+#+RESULTS:
+: integer(0)
+: [1] 318 859
+
+#+begin_src R :results output :session curso :exports both
+homicides[859]
+#+end_src
+
+#+RESULTS:
+: [1] "39.33743900000, -76.66316500000, icon_homicide_bluntforce, 'p914', '<dl><dt><a href=\"http://essentials.baltimoresun.com/micro_sun/homicides/victim/914/steven-harris\">Steven Harris</a></dt><dd class=\"address\">4200 Pimlico Road<br />Baltimore, MD 21215</dd><dd>Race: Black<br />Gender: male<br />Age: 38 years old</dd><dd>Found on July 29, 2010</dd><dd>Victim died at Scene</dd><dd>Cause: Blunt Force</dd><dd class=\"popup-note\"><p>Harris was found dead July 22 and ruled a shooting victim; an autopsy subsequently showed that he had not been shot,...</dd></dl>'"
+
+
+** regexpr
+
+#+begin_src R :results output :session curso :exports both
+homicides[1]
+#+end_src
+
+#+RESULTS:
+: [1] "39.311024, -76.674227, iconHomicideShooting, 'p2', '<dl><dt>Leon Nelson</dt><dd class=\"address\">3400 Clifton Ave.<br />Baltimore, MD 21216</dd><dd>black male, 17 years old</dd><dd>Found on January 1, 2007</dd><dd>Victim died at Shock Trauma</dd><dd>Cause: shooting</dd></dl>'"
+
+
+#+begin_src R :results output :session curso :exports both
+regexpr("<dd>[F|f]ound(.*)</dd>", homicides[1])
+#+end_src
+
+#+RESULTS:
+: [1] 177
+: attr(,"match.length")
+: [1] 93
+: attr(,"index.type")
+: [1] "chars"
+: attr(,"useBytes")
+: [1] TRUE
+
+#+begin_src R :results output :session curso :exports both
+substr(homicides[1], 177, 177+93-1)
+#+end_src
+
+#+RESULTS:
+: [1] "<dd>Found on January 1, 2007</dd><dd>Victim died at Shock Trauma</dd><dd>Cause: shooting</dd>"
+
+** regmatches
+
+#+begin_src R :results output :session curso :exports both
+  r <- regexpr("<dd>[F|f]ound(.*?)</dd>", homicides[1:5])
+  regmatches(homicides[1:5], r)
+#+end_src
+
+#+RESULTS:
+: [1] "<dd>Found on January 1, 2007</dd>" "<dd>Found on January 2, 2007</dd>" "<dd>Found on January 2, 2007</dd>"
+: [4] "<dd>Found on January 3, 2007</dd>" "<dd>Found on January 5, 2007</dd>"
+
+* sub/gsub
+
+
+#+begin_src R :results output :session curso :exports both
+  x <- substr(homicides[1], 177, 177+33-1)
+  x
+  sub("<dd>[F|f]ound on |</dd>", "", x)
+  gsub("<dd>[F|f]ound on |</dd>", "", x)
+#+end_src
+
+#+RESULTS:
+: [1] "<dd>Found on January 1, 2007</dd>"
+: [1] "January 1, 2007</dd>"
+: [1] "January 1, 2007"
+
+
+#+begin_src R :results output :session curso :exports both
+  r <- regexpr("<dd>[F|f]ound(.*?)</dd>", homicides[1:5])
+  m <- regmatches(homicides[1:5], r)
+  d <- gsub("<dd>[F|f]ound on |</dd>", "", m)
+  d
+  as.Date(d, "%B %d,%Y")
+#+end_src
+
+#+RESULTS:
+: [1] "January 1, 2007" "January 2, 2007" "January 2, 2007" "January 3, 2007" "January 5, 2007"
+: [1] "2007-01-01" "2007-01-02" "2007-01-02" "2007-01-03" "2007-01-05"
+
+* regexec
+
+La funci'on =regexec= trabaja cp,p =regexpr= exceptoque te da el indice 
+
+#+begin_src R :file ./fig/regexec.png :results file graphics :session curso :exports both
+  r <- regexec("<dd>[F|f]ound on (.*?)</dd>", homicides)
+  m <- regmatches(homicides, r)
+  dates <- sapply(m, function(x) x[2])
+  dates <- as.Date(dates, "%B %d, %Y")
+  hist(dates, "month", freq=TRUE)
+#+end_src
+
+#+RESULTS:
+[[file:./fig/regexec.png]]
