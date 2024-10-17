@@ -135,7 +135,6 @@ Hay una funci'on =strptime= en caso de que tus datos sean escritos en formatos d
 
 #+RESULTS:
 
-
 * Plotting and Color in R
 
 El paquete =grDevices= tiene dos funciones
